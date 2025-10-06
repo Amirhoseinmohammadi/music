@@ -3,6 +3,7 @@ import { Link } from '@saas-ui/react'
 import { NextSeoProps } from 'next-seo'
 import { FaGithub, FaTwitter } from 'react-icons/fa'
 import { FiCheck } from 'react-icons/fi'
+
 import { Logo } from './logo'
 
 const siteConfig = {
@@ -16,26 +17,26 @@ const siteConfig = {
   header: {
     links: [
       {
-        id: 'features',
-        label: 'Features',
+        id: 'Tracks',
+        label: 'Tracks',
       },
-      {
-        id: 'pricing',
-        label: 'Pricing',
-      },
-      {
-        id: 'faq',
-        label: 'FAQ',
-      },
-      {
-        label: 'Login',
-        href: '/login',
-      },
-      {
-        label: 'Sign Up',
-        href: '/signup',
-        variant: 'primary',
-      },
+      // {
+      //   id: 'pricing',
+      //   label: 'Pricing',
+      // },
+      // {
+      //   id: 'faq',
+      //   label: 'FAQ',
+      // },
+      // {
+      //   label: 'Login',
+      //   href: '/login',
+      // },
+      // {
+      //   label: 'Sign Up',
+      //   href: '/signup',
+      //   variant: 'primary',
+      // },
     ],
   },
   footer: {

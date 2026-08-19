@@ -1,204 +1,250 @@
 'use client'
 
 import {
+  Badge,
   Box,
   ButtonGroup,
   Container,
   Flex,
-  HStack,
   Heading,
+  HStack,
   Icon,
-  IconButton,
+  SimpleGrid,
   Stack,
-  Tag,
   Text,
+  useColorModeValue,
   VStack,
-  Wrap,
-  useClipboard,
 } from '@chakra-ui/react'
-import { Br, Link } from '@saas-ui/react'
-import type { Metadata, NextPage } from 'next'
+import type { NextPage } from 'next'
 import Image from 'next/image'
+import * as React from 'react'
 import {
-  FiArrowRight,
-  FiBox,
-  FiCheck,
-  FiCode,
-  FiCopy,
-  FiFlag,
-  FiGrid,
-  FiLock,
-  FiSearch,
-  FiSliders,
-  FiSmile,
-  FiTerminal,
-  FiThumbsUp,
-  FiToggleLeft,
-  FiTrendingUp,
-  FiUserPlus,
+  FiArrowDown,
+  FiDisc,
+  FiDownload,
+  FiHeadphones,
+  FiLayers,
+  FiMapPin,
+  FiMic,
+  FiMusic,
 } from 'react-icons/fi'
 
-import * as React from 'react'
-
-import { ButtonLink } from '#components/button-link/button-link'
-import { Faq } from '#components/faq'
-import { BackgroundGradient } from '#components/gradients/background-gradient'
-import { Hero } from '#components/hero'
-import { ChakraLogo, NextjsLogo } from '#components/logos'
-import { FallInPlace } from '#components/motion/fall-in-place'
 import { MusicDownloaderList } from '#components/music-downloader'
-
-export const meta: Metadata = {
-  title: 'Saas UI Landingspage',
-  description: 'Free SaaS landingspage starter kit',
-}
+import { useLanguage } from 'context/language-context'
+import { tracks } from 'data/songs'
 
 const Home: NextPage = () => {
   return (
-    <Box>
+    <Box bg="#000000" minH="100vh">
       <HeroSection />
-
       <MusicDownloaderSection />
+      <AboutSection />
     </Box>
   )
 }
 
 const HeroSection: React.FC = () => {
   return (
-    <Box position="relative" overflow="hidden">
-      <BackgroundGradient height="100%" zIndex="-1" />
-      <Container maxW="container.xl" pt={{ base: 40, lg: 60 }} pb="40">
-        <Stack direction={{ base: 'column', lg: 'row' }} alignItems="center">
-          <Hero
-            id="home"
-            justifyContent="flex-start"
-            px="0"
-            title={
-              <FallInPlace>
-                Where
-                <Br />
-                Emotions Sing
-              </FallInPlace>
-            }
-            description={
-              <FallInPlace delay={0.4} fontWeight="medium">
-                ALDA isn't just a rapper; he's a lyricist from the heart of
-                Zanjan, Iran. With a voice described as "raw and powerful," he
-                crafts rhymes drawn from the rugged streets and personal
-                experiences—from the hustle of Tehran to great triumphs echoing
-                the ancient vibes of Persian heritage.
-              </FallInPlace>
-            }
-          >
-            <FallInPlace delay={0.8}>
-              <HStack pt="4" pb="12" spacing="8">
-                <NextjsLogo height="28px" /> <ChakraLogo height="20px" />
-              </HStack>
+    <Box id="hero" position="relative" height="100vh" width="100vw" overflow="hidden" bg="#000000" ml="calc(50% - 50vw)">
+      {/* Background Image with Heavy Radial Fade */}
+      <Box position="absolute" inset="0" zIndex="0">
+        <Image
+          src="/static/images/alda.jpeg"
+          alt="ALDA Rapper"
+          fill
+          style={{ objectFit: 'cover', objectPosition: 'center 20%' }}
+          priority
+          quality={90}
+        />
+        <Box
+          position="absolute"
+          inset="0"
+          bg="radial-gradient(circle at center, transparent 0%, #000000 70%, #000000 100%)"
+        />
+        <Box
+          position="absolute"
+          inset="0"
+          bgGradient="linear(to-b, transparent 0%, rgba(0,0,0,0.6) 70%, #000000 100%)"
+        />
+      </Box>
 
-              <ButtonGroup spacing={4} alignItems="center">
-                <ButtonLink colorScheme="primary" size="lg" href="/signup">
-                  Sign Up
-                </ButtonLink>
-                <ButtonLink
-                  size="lg"
-                  href="https://demo.saas-ui.dev"
-                  variant="outline"
-                  rightIcon={
-                    <Icon
-                      as={FiArrowRight}
-                      sx={{
-                        transitionProperty: 'common',
-                        transitionDuration: 'normal',
-                        '.chakra-button:hover &': {
-                          transform: 'translate(5px)',
-                        },
-                      }}
-                    />
-                  }
-                >
-                  View demo
-                </ButtonLink>
-              </ButtonGroup>
-            </FallInPlace>
-          </Hero>
-          <Box
-            height="600px"
-            position="absolute"
-            display={{ base: 'none', lg: 'block' }}
-            left={{ lg: '60%', xl: '55%' }}
-            width="80vw"
-            maxW="1100px"
-            margin="0 auto"
-          >
-            <FallInPlace delay={1}>
-              <Box overflow="hidden" height="100%">
-                <Image
-                  src="/static/images/alda.jpeg"
-                  width={500}
-                  height={500}
-                  alt="Screenshot of a ListPage in Saas UI Pro"
-                  quality="75"
-                  priority
-                />
-              </Box>
-            </FallInPlace>
-          </Box>
-        </Stack>
-      </Container>
+      {/* Centerpiece Content */}
+      <Flex
+        position="absolute"
+        inset="0"
+        zIndex="1"
+        direction="column"
+        align="center"
+        justify="flex-end"
+        pb={{ base: 24, md: 32 }}
+        pointerEvents="none"
+      >
+        <Text
+          color="gray.400"
+          fontSize={{ base: '10px', md: 'xs' }}
+          fontWeight="bold"
+          letterSpacing="0.3em"
+          mb={4}
+          textTransform="uppercase"
+        >
+          Rapper & Producer / From Zanjan
+        </Text>
+        <Heading
+          as="h1"
+          color="white"
+          fontSize={{ base: '6xl', sm: '8xl', md: '10xl', lg: '12xl' }}
+          fontWeight="900"
+          letterSpacing="0.1em"
+          lineHeight="0.8"
+          textTransform="uppercase"
+        >
+          ALDA
+        </Heading>
+      </Flex>
+
+      {/* Edge Accents */}
+      <Box position="absolute" top="50%" left={8} transform="translateY(-50%) rotate(-90deg)" transformOrigin="left center" zIndex="2" display={{ base: 'none', lg: 'block' }}>
+        <Text color="gray.500" fontSize="xs" fontWeight="bold" letterSpacing="widest">
+          ✳ SINCE 2020
+        </Text>
+      </Box>
+
+      <Box position="absolute" top="50%" right={8} transform="translateY(-50%) rotate(90deg)" transformOrigin="right center" zIndex="2" display={{ base: 'none', lg: 'block' }}>
+        <Text color="gray.500" fontSize="xs" fontWeight="bold" letterSpacing="widest">
+          ✳ UNDERGROUND RAP
+        </Text>
+      </Box>
+
+      {/* Bottom Corners */}
+      <Flex position="absolute" bottom={8} left={8} right={8} justify="space-between" zIndex="2" align="flex-end">
+        {/* Bottom Left */}
+        <VStack align="flex-start" spacing={1}>
+          <Text color="gray.500" fontSize="10px" fontWeight="bold" letterSpacing="widest" mb={1}>STREAM</Text>
+          <HStack as="a" href="https://spotify.com" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
+            <Text>Spotify</Text><Icon as={FiArrowDown} transform="rotate(-135deg)" />
+          </HStack>
+          <HStack as="a" href="https://soundcloud.com" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
+            <Text>Soundcloud</Text><Icon as={FiArrowDown} transform="rotate(-135deg)" />
+          </HStack>
+          <HStack as="a" href="https://youtube.com" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
+            <Text>YouTube</Text><Icon as={FiArrowDown} transform="rotate(-135deg)" />
+          </HStack>
+        </VStack>
+
+        {/* Bottom Right */}
+        <VStack align="flex-end" spacing={1}>
+          <Text color="gray.500" fontSize="10px" fontWeight="bold" letterSpacing="widest" mb={1}>CONNECT</Text>
+          <HStack as="a" href="https://instagram.com" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
+            <Text>Instagram</Text><Icon as={FiArrowDown} transform="rotate(-135deg)" />
+          </HStack>
+          <HStack as="a" href="https://t.me" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
+            <Text>Telegram</Text><Icon as={FiArrowDown} transform="rotate(-135deg)" />
+          </HStack>
+        </VStack>
+      </Flex>
     </Box>
   )
 }
 
-const MusicDownloaderSection = () => {
+const MusicDownloaderSection: React.FC = () => {
+  const { t } = useLanguage()
+
   return (
-    <MusicDownloaderList
-      id="music"
-      title={
-        <Heading
-          lineHeight="short"
-          fontSize={['2xl', null, '4xl']}
-          textAlign="left"
-          as="p"
-        >
-          Top Tracks
-          <Br /> to Download
-        </Heading>
-      }
-      description={
-        <>
-          Listen and download your favorite tracks directly from here.
-          <Br />
-          All tracks are ready to play and fully responsive.
-        </>
-      }
-      columns={[1, 2, 3]}
-      musics={[
-        {
-          title: 'A Sky Full of Stars',
-          artist: 'Coldplay',
-          imageUrl: '/S.webp.jpg',
-          downloadUrl: '#',
-          duration: '4:20',
-          progress: 45,
-        },
-        {
-          title: 'Blinding Lights',
-          artist: 'The Weeknd',
-          imageUrl: '/blinding-lights.jpg',
-          downloadUrl: '#',
-          duration: '3:22',
-          progress: 60,
-        },
-        {
-          title: 'Shape of You',
-          artist: 'Ed Sheeran',
-          imageUrl: '/shape-of-you.jpg',
-          downloadUrl: '#',
-          duration: '3:54',
-          progress: 30,
-        },
-      ]}
-    />
+    <Container maxW="container.xl">
+      <MusicDownloaderList
+        id="tracks"
+        title={t.tracksSectionTitle}
+        description={t.tracksSectionSubtitle}
+        tracks={tracks}
+      />
+    </Container>
+  )
+}
+
+const AboutSection: React.FC = () => {
+  const { t, language } = useLanguage()
+
+  return (
+    <Box id="about" py={{ base: 20, md: 32 }} bg="#000000" borderTop="1px solid rgba(255, 255, 255, 0.08)">
+      <Container maxW="container.xl">
+        <Stack direction={{ base: 'column', lg: 'row' }} spacing={{ base: 12, lg: 20 }} alignItems="flex-start">
+          {/* Bio Description */}
+          <VStack align="flex-start" spacing={8} flex="1">
+            <Heading
+              fontSize={{ base: '4xl', md: '6xl', lg: '8xl' }}
+              fontWeight="900"
+              color="white"
+              textTransform="uppercase"
+              letterSpacing="tighter"
+              lineHeight="0.9"
+            >
+              {t.aboutSubtitle}
+            </Heading>
+
+            <Box borderLeft="2px solid #FF1E42" pl={6}>
+              <Text color="gray.300" fontSize={{ base: 'md', md: 'xl' }} lineHeight="1.8" fontFamily="mono">
+                {t.aboutP1}
+              </Text>
+            </Box>
+
+            <Text color="gray.500" fontSize="sm" lineHeight="tall" fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
+              {t.aboutP2}
+            </Text>
+          </VStack>
+
+          {/* Minimalist Stat Grid */}
+          <SimpleGrid columns={1} spacing={0} flex="1" w="full" borderTop="1px solid rgba(255, 255, 255, 0.08)">
+            <Flex py={6} borderBottom="1px solid rgba(255, 255, 255, 0.08)" justify="space-between" align="center">
+              <HStack spacing={4}>
+                <Icon as={FiMapPin} color="#FF1E42" boxSize={5} />
+                <Text fontSize="xs" color="gray.500" fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
+                  Roots & Scene
+                </Text>
+              </HStack>
+              <Text color="white" fontFamily="mono" fontWeight="bold" textTransform="uppercase">
+                {t.aboutStatOrigin}
+              </Text>
+            </Flex>
+
+            <Flex py={6} borderBottom="1px solid rgba(255, 255, 255, 0.08)" justify="space-between" align="center">
+              <HStack spacing={4}>
+                <Icon as={FiMic} color="#FF1E42" boxSize={5} />
+                <Text fontSize="xs" color="gray.500" fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
+                  Underground
+                </Text>
+              </HStack>
+              <Text color="white" fontFamily="mono" fontWeight="bold" textTransform="uppercase">
+                {t.aboutStatGenre}
+              </Text>
+            </Flex>
+
+            <Flex py={6} borderBottom="1px solid rgba(255, 255, 255, 0.08)" justify="space-between" align="center">
+              <HStack spacing={4}>
+                <Icon as={FiLayers} color="#FF1E42" boxSize={5} />
+                <Text fontSize="xs" color="gray.500" fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
+                  Flow & Signature
+                </Text>
+              </HStack>
+              <Text color="white" fontFamily="mono" fontWeight="bold" textTransform="uppercase">
+                {t.aboutStatStyle}
+              </Text>
+            </Flex>
+
+            <Flex py={6} borderBottom="1px solid rgba(255, 255, 255, 0.08)" justify="space-between" align="center">
+              <HStack spacing={4}>
+                <Icon as={FiDisc} color="#FF1E42" boxSize={5} />
+                <Text fontSize="xs" color="gray.500" fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
+                  Direct Catalog
+                </Text>
+              </HStack>
+              <Text color="white" fontFamily="mono" fontWeight="bold" textTransform="uppercase">
+                {t.aboutStatDistribution}
+              </Text>
+            </Flex>
+          </SimpleGrid>
+        </Stack>
+      </Container>
+    </Box>
   )
 }
 

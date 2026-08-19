@@ -1,91 +1,66 @@
-import { Button } from '@chakra-ui/react'
-import { Link } from '@saas-ui/react'
-import { NextSeoProps } from 'next-seo'
-import { FaGithub, FaTwitter } from 'react-icons/fa'
-import { FiCheck } from 'react-icons/fi'
+import * as React from 'react'
+import { FaInstagram, FaSoundcloud, FaSpotify, FaTelegramPlane, FaYoutube } from 'react-icons/fa'
 
-import { Logo } from './logo'
+export interface SeoConfig {
+  title: string
+  description: string
+}
 
 const siteConfig = {
-  logo: Logo,
   seo: {
-    title: 'Saas UI',
-    description: 'The React component library for startups',
-  } as NextSeoProps,
-  termsUrl: '#',
-  privacyUrl: '#',
+    title: 'ALDA | Official Music Portfolio',
+    description: 'Official discography and direct track downloads for ALDA - Persian Underground Rap.',
+  } as SeoConfig,
   header: {
     links: [
       {
-        id: 'Tracks',
-        label: 'Tracks',
+        id: 'hero',
+        label: 'Home',
+        labelFa: 'خانه',
+        href: '#hero',
       },
-      // {
-      //   id: 'pricing',
-      //   label: 'Pricing',
-      // },
-      // {
-      //   id: 'faq',
-      //   label: 'FAQ',
-      // },
-      // {
-      //   label: 'Login',
-      //   href: '/login',
-      // },
-      // {
-      //   label: 'Sign Up',
-      //   href: '/signup',
-      //   variant: 'primary',
-      // },
+      {
+        id: 'tracks',
+        label: 'Tracks',
+        labelFa: 'آهنگ‌ها',
+        href: '#tracks',
+      },
+      {
+        id: 'about',
+        label: 'About ALDA',
+        labelFa: 'درباره آلدا',
+        href: '#about',
+      },
+      {
+        id: 'contact',
+        label: 'Contact',
+        labelFa: 'ارتباط',
+        href: '#contact',
+      },
     ],
   },
   footer: {
-    copyright: (
-      <>
-        Built by{' '}
-        <Link href="https://twitter.com/Pagebakers">Eelco Wiersma</Link>
-      </>
-    ),
+    copyright: '© ALDA. All rights reserved.',
     links: [
       {
-        href: 'mailto:hello@saas-ui.dev',
-        label: 'Contact',
+        href: 'https://instagram.com',
+        label: <FaInstagram size="18" />,
       },
       {
-        href: 'https://twitter.com/saas_js',
-        label: <FaTwitter size="14" />,
+        href: 'https://t.me',
+        label: <FaTelegramPlane size="18" />,
       },
       {
-        href: 'https://github.com/saas-js/saas-ui',
-        label: <FaGithub size="14" />,
-      },
-    ],
-  },
-  signup: {
-    title: 'Start building with Saas UI',
-    features: [
-      {
-        icon: FiCheck,
-        title: 'Accessible',
-        description: 'All components strictly follow WAI-ARIA standards.',
+        href: 'https://youtube.com',
+        label: <FaYoutube size="18" />,
       },
       {
-        icon: FiCheck,
-        title: 'Themable',
-        description:
-          'Fully customize all components to your brand with theme support and style props.',
+        href: 'https://spotify.com',
+        label: <FaSpotify size="18" />,
       },
       {
-        icon: FiCheck,
-        title: 'Composable',
-        description:
-          'Compose components to fit your needs and mix them together to create new ones.',
-      },
-      {
-        icon: FiCheck,
-        title: 'Productive',
-        description:
-          'Designed to reduce boilerplate and fully typed, build your product at speed.',
+        href: 'https://soundcloud.com',
+        label: <FaSoundcloud size="18" />,
       },
     ],
   },

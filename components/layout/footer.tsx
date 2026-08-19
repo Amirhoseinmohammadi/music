@@ -1,85 +1,64 @@
+'use client'
+
 import {
   Box,
   BoxProps,
   Container,
   Flex,
   HStack,
-  SimpleGrid,
+  IconButton,
+  Link,
   Stack,
   Text,
+  useColorModeValue,
+  VStack,
 } from '@chakra-ui/react'
-import { Link, LinkProps } from '@saas-ui/react'
+import * as React from 'react'
 
+import { Logo } from './logo'
+import { useLanguage } from 'context/language-context'
 import siteConfig from '#data/config'
 
-export interface FooterProps extends BoxProps {
-  columns?: number
-}
+export interface FooterProps extends BoxProps {}
 
 export const Footer: React.FC<FooterProps> = (props) => {
-  const { columns = 2, ...rest } = props
+  const { t } = useLanguage()
+
   return (
-    <Box bg="white" _dark={{ bg: 'gray.900' }} {...rest}>
-      <Container maxW="container.2xl" px="8" py="8">
-        <SimpleGrid columns={columns}>
-          <Stack spacing="8">
-            <Stack alignItems="flex-start">
-              <Flex>
-                <Box as={siteConfig.logo} flex="1" height="32px" />
-              </Flex>
-              <Text fontSize="md" color="muted">
-                {siteConfig.seo.description}
-              </Text>
-            </Stack>
-            <Copyright>{siteConfig.footer.copyright}</Copyright>
-          </Stack>
-          <HStack justify="flex-end" spacing="4" alignSelf="flex-end">
-            {siteConfig.footer?.links?.map(({ href, label }) => (
-              <FooterLink key={href} href={href}>
-                {label}
-              </FooterLink>
-            ))}
+    <Box
+      id="contact"
+      as="footer"
+      bg="#000000"
+      borderTop="1px solid rgba(255, 255, 255, 0.08)"
+      py={12}
+      {...props}
+    >
+      <Container maxW="container.xl" px={{ base: 4, md: 8 }}>
+        <Flex direction={{ base: 'column', md: 'row' }} justify="space-between" align="center" gap={8}>
+          
+          <VStack align={{ base: 'center', md: 'flex-start' }} spacing={1}>
+             <Text color="gray.500" fontSize="10px" fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
+               {t.footerRights}
+             </Text>
+          </VStack>
+
+          <HStack spacing={6} wrap="wrap" justify="center">
+            <Link href="https://instagram.com" target="_blank" color="white" fontFamily="mono" fontSize="10px" fontWeight="bold" letterSpacing="widest" textTransform="uppercase" _hover={{ color: '#FF1E42' }}>
+              INSTAGRAM →
+            </Link>
+            <Link href="https://t.me" target="_blank" color="white" fontFamily="mono" fontSize="10px" fontWeight="bold" letterSpacing="widest" textTransform="uppercase" _hover={{ color: '#FF1E42' }}>
+              TELEGRAM →
+            </Link>
+            <Link href="https://spotify.com" target="_blank" color="white" fontFamily="mono" fontSize="10px" fontWeight="bold" letterSpacing="widest" textTransform="uppercase" _hover={{ color: '#FF1E42' }}>
+              SPOTIFY →
+            </Link>
+            <Link href="https://soundcloud.com" target="_blank" color="white" fontFamily="mono" fontSize="10px" fontWeight="bold" letterSpacing="widest" textTransform="uppercase" _hover={{ color: '#FF1E42' }}>
+              SOUNDCLOUD →
+            </Link>
           </HStack>
-        </SimpleGrid>
+
+        </Flex>
       </Container>
     </Box>
-  )
-}
-
-export interface CopyrightProps {
-  title?: React.ReactNode
-  children: React.ReactNode
-}
-
-export const Copyright: React.FC<CopyrightProps> = ({
-  title,
-  children,
-}: CopyrightProps) => {
-  let content
-  if (title && !children) {
-    content = `&copy; ${new Date().getFullYear()} - ${title}`
-  }
-  return (
-    <Text color="muted" fontSize="sm">
-      {content || children}
-    </Text>
-  )
-}
-
-export const FooterLink: React.FC<LinkProps> = (props) => {
-  const { children, ...rest } = props
-  return (
-    <Link
-      color="muted"
-      fontSize="sm"
-      textDecoration="none"
-      _hover={{
-        color: 'white',
-        transition: 'color .2s ease-in',
-      }}
-      {...rest}
-    >
-      {children}
-    </Link>
   )
 }

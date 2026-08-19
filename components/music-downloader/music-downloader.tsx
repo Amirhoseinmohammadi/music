@@ -1,177 +1,228 @@
-import { Icon } from '@chakra-ui/react'
+'use client'
+
 import {
   Box,
+  Button,
+  Flex,
   Heading,
+  HStack,
+  Icon,
   Image,
-  SimpleGrid,
-  Stack,
   Text,
   VStack,
 } from '@chakra-ui/react'
-import { Section, SectionTitle, SectionTitleProps } from 'components/section'
-import {
-  FiDownload,
-  FiHeart,
-  FiPause,
-  FiPlay,
-  FiSkipForward,
-} from 'react-icons/fi'
-
+import * as mm from 'music-metadata-browser'
 import * as React from 'react'
+import { FiDownload, FiPause, FiPlay } from 'react-icons/fi'
 
-const Revealer = ({ children }: any) => children
+import { Section, SectionTitle } from 'components/section'
+import { useLanguage } from 'context/language-context'
+import { Track } from 'data/songs'
 
-export interface MusicProps {
-  title?: string
-  artist?: string
-  imageUrl?: string
-  downloadUrl?: string
-  duration?: string
-  progress?: number
-  delay?: number
-}
-
-export interface MusicDownloaderListProps
-  extends Omit<SectionTitleProps, 'title' | 'variant'> {
+export interface MusicDownloaderProps {
+  id?: string
   title?: React.ReactNode
   description?: React.ReactNode
-  musics: MusicProps[]
-  columns?: number | number[]
-  spacing?: string | number
-  reveal?: React.FC<any>
+  tracks: Track[]
 }
 
-export const MusicItem: React.FC<MusicProps> = ({
-  title,
-  artist,
-  imageUrl,
-  downloadUrl,
-  duration,
-  progress = 0,
-}) => {
-  const handleDownload = (e: React.MouseEvent) => {
-    e.preventDefault()
-    const link = document.createElement('a')
-    link.href = downloadUrl || '#'
-    link.download = `${title || 'song'}.mp3`
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }
+interface TrackCardProps {
+  track: Track
+  isPlaying: boolean
+  onTogglePlay: (track: Track) => void
+}
+
+const TrackCard: React.FC<TrackCardProps> = ({ track, isPlaying, onTogglePlay }) => {
+  const { language } = useLanguage()
+  const [coverUrl, setCoverUrl] = React.useState<string | null>(null)
+
+  React.useEffect(() => {
+    let isMounted = true
+    let createdBlobUrl: string | null = null
+
+    const loadEmbeddedCover = async () => {
+      if (!track.audioUrl) return
+
+      try {
+        const response = await fetch(track.audioUrl)
+        if (!response.ok) throw new Error(`HTTP error ${response.status}`)
+        const audioBlob = await response.blob()
+        const metadata = await mm.parseBlob(audioBlob)
+
+        if (metadata.common.picture && metadata.common.picture.length > 0) {
+          const pic = metadata.common.picture[0]
+          const imageBlob = new Blob([pic.data], { type: pic.format || 'image/jpeg' })
+          createdBlobUrl = URL.createObjectURL(imageBlob)
+          if (isMounted) {
+            setCoverUrl(createdBlobUrl)
+          }
+        }
+      } catch (err) {
+        // Fallback silently
+      }
+    }
+
+    loadEmbeddedCover()
+
+    return () => {
+      isMounted = false
+      if (createdBlobUrl) {
+        URL.revokeObjectURL(createdBlobUrl)
+      }
+    }
+  }, [track.audioUrl])
+
+  const displayTitle = language === 'fa' ? track.titleFa || track.title : track.title
+  const displayAlbum = language === 'fa' ? track.albumFa || track.album : track.album
+  const imageSource = coverUrl || '/static/images/alda.jpeg'
+
+  const hasCustomDriveLink =
+    track.driveDownloadUrl &&
+    !track.driveDownloadUrl.includes('DRIVE_ID') &&
+    !track.driveDownloadUrl.includes('YOUR_GDRIVE') &&
+    track.driveDownloadUrl.startsWith('http')
+  const downloadHref = hasCustomDriveLink ? track.driveDownloadUrl : track.audioUrl
+  const downloadFilename = `${track.artist} - ${track.title}.mp3`
 
   return (
-    <Stack
-      direction={['column', 'row']}
-      bg="#161A2B"
-      rounded="2xl"
-      shadow="lg"
-      border="1px solid #2a2f45"
-      overflow="hidden"
-      spacing={4}
-      align="center"
+    <Flex
+      bg="#000000"
+      borderBottom="1px solid"
+      borderColor="rgba(255, 255, 255, 0.08)"
       p={4}
+      align="center"
+      justify="space-between"
+      transition="all 0.2s"
+      _hover={{ bg: 'rgba(255, 30, 66, 0.05)' }}
     >
-      <Image
-        src={imageUrl}
-        alt={title}
-        boxSize={['full', '48']}
-        objectFit="cover"
-        borderRadius={['2xl', 'xl']}
-      />
-      <VStack flex="1" align="stretch" spacing={4}>
-        {/* Title + Heart */}
-        <Box display="flex" justifyContent="space-between">
-          <Box>
-            <Heading size="md" color="white">
-              {title}
-            </Heading>
-            <Text fontSize="sm" color="gray.400">
-              {artist}
-            </Text>
-          </Box>
-          <Box>
-            <Icon as={FiHeart} boxSize={6} color="red.400" />
-          </Box>
-        </Box>
-
-        {/* Progress bar */}
-        <Box>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            fontSize="xs"
-            color="gray.500"
+      <HStack spacing={4}>
+        {/* Vinyl-style Avatar */}
+        <Box
+          position="relative"
+          w="48px"
+          h="48px"
+          borderRadius="full"
+          overflow="hidden"
+          border="1px solid rgba(255, 255, 255, 0.1)"
+          flexShrink={0}
+        >
+          <Image src={imageSource} w="100%" h="100%" objectFit="cover" alt="cover" fallbackSrc="/static/images/alda.jpeg" />
+          <Flex
+            position="absolute"
+            inset="0"
+            bg="rgba(0,0,0,0.5)"
+            align="center"
+            justify="center"
+            cursor="pointer"
+            onClick={() => onTogglePlay(track)}
+            _hover={{ bg: 'rgba(0,0,0,0.7)' }}
           >
-            <span>0:00</span>
-            <span>{duration}</span>
-          </Box>
-          <Box
-            mt={2}
-            height="2"
-            bg="gray.700"
-            rounded="full"
-            position="relative"
-          >
-            <Box
-              height="2"
-              bgGradient="linear(to-r, red.500, pink.500)"
-              width={`${progress}%`}
-              rounded="full"
-              position="relative"
-            >
-              <Box
-                width="4"
-                height="4"
-                bg="red.500"
-                rounded="full"
-                position="absolute"
-                right={0}
-                top={-1}
-                shadow="lg"
-              />
-            </Box>
-          </Box>
+            <Icon as={isPlaying ? FiPause : FiPlay} color={isPlaying ? '#FF1E42' : 'white'} />
+          </Flex>
         </Box>
+        
+        {/* Track Info */}
+        <VStack align="flex-start" spacing={1}>
+          <Text
+            color={isPlaying ? '#FF1E42' : 'white'}
+            fontFamily="mono"
+            fontSize={{ base: 'xs', md: 'sm' }}
+            fontWeight="bold"
+            textTransform="uppercase"
+            letterSpacing="widest"
+          >
+            {displayTitle}
+          </Text>
+          <HStack spacing={2} color="gray.500" fontSize="10px" fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
+            <Text>{track.duration || '0:00'}</Text>
+            {displayAlbum && <Text>| {displayAlbum}</Text>}
+          </HStack>
+        </VStack>
+      </HStack>
 
-        {/* Controls */}
-        <Stack direction="row" justify="space-between">
-          <Icon as={FiPlay} boxSize={5} color="gray.300" />
-          <Icon as={FiPause} boxSize={6} color="white" />
-          <Icon as={FiSkipForward} boxSize={5} color="gray.300" />
-          <Box as="button" onClick={handleDownload}>
-            <Icon as={FiDownload} boxSize={5} color="gray.300" />
-          </Box>
-        </Stack>
-      </VStack>
-    </Stack>
+      <Button
+        as="a"
+        href={downloadHref}
+        download={downloadFilename}
+        target={hasCustomDriveLink ? '_blank' : undefined}
+        rel={hasCustomDriveLink ? 'noopener noreferrer' : undefined}
+        size="sm"
+        variant="outline"
+        borderColor="rgba(255, 255, 255, 0.2)"
+        color="white"
+        borderRadius="full"
+        fontFamily="mono"
+        fontSize="10px"
+        fontWeight="bold"
+        letterSpacing="widest"
+        _hover={{ bg: '#FF1E42', borderColor: '#FF1E42', color: 'white' }}
+        leftIcon={<FiDownload />}
+      >
+        DL
+      </Button>
+    </Flex>
   )
 }
 
-export const MusicDownloaderList: React.FC<MusicDownloaderListProps> = ({
+export const MusicDownloaderList: React.FC<MusicDownloaderProps> = ({
+  id = 'tracks',
   title,
   description,
-  musics,
-  columns = [1, 1, 2],
-  spacing = 8,
-  reveal: Wrap = Revealer,
-  ...rest
+  tracks,
 }) => {
+  const [currentPlayingId, setCurrentPlayingId] = React.useState<string | null>(null)
+  const audioRef = React.useRef<HTMLAudioElement | null>(null)
+  const { language } = useLanguage()
+
+  const togglePlay = (track: Track) => {
+    if (!track.audioUrl) return
+
+    if (currentPlayingId === track.id) {
+      audioRef.current?.pause()
+      setCurrentPlayingId(null)
+    } else {
+      if (audioRef.current) {
+        audioRef.current.src = track.audioUrl
+        audioRef.current.play()
+        setCurrentPlayingId(track.id)
+      }
+    }
+  }
+
   return (
-    <Section {...rest}>
-      <VStack spacing={8} align="stretch">
+    <Section id={id} py="20" bg="#000000">
+      <audio
+        ref={audioRef}
+        onEnded={() => setCurrentPlayingId(null)}
+        style={{ display: 'none' }}
+      />
+
+      <VStack spacing={12} align="stretch" maxW="3xl" mx="auto">
         {(title || description) && (
-          <Wrap>
-            <SectionTitle title={title} description={description} />
-          </Wrap>
+          <VStack align="flex-start" spacing={4}>
+            {title && (
+              <Heading as="h2" size="xl" fontFamily="mono" textTransform="uppercase" letterSpacing="widest" color="white">
+                {title}
+              </Heading>
+            )}
+            {description && (
+              <Text fontFamily="mono" fontSize="sm" color="gray.500" letterSpacing="widest" textTransform="uppercase">
+                {description}
+              </Text>
+            )}
+          </VStack>
         )}
 
-        <SimpleGrid columns={columns} spacing={spacing}>
-          {musics.map((music, i) => (
-            <Wrap key={i} delay={music.delay}>
-              <MusicItem {...music} />
-            </Wrap>
+        <Box borderTop="1px solid" borderColor="rgba(255, 255, 255, 0.08)">
+          {tracks.map((track) => (
+            <TrackCard
+              key={track.id}
+              track={track}
+              isPlaying={currentPlayingId === track.id}
+              onTogglePlay={togglePlay}
+            />
           ))}
-        </SimpleGrid>
+        </Box>
       </VStack>
     </Section>
   )

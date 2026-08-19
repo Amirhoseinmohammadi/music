@@ -1,39 +1,38 @@
-import { Box, Flex, Heading, VisuallyHidden } from '@chakra-ui/react'
-import { Link } from '@saas-ui/react'
-
+import { Box, HStack, Text } from '@chakra-ui/react'
+import Link from 'next/link'
 import * as React from 'react'
-
-import siteConfig from '#data/config'
 
 export interface LogoProps {
   href?: string
   onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void
 }
 
-export const Logo = ({ href = '/', onClick }: LogoProps) => {
-  let logo
-  if (siteConfig.logo) {
-    logo = <Box as={siteConfig.logo} height="32px" mt="-4px" />
-  } else {
-    logo = (
-      <Heading as="h1" size="md">
-        {siteConfig.seo?.title}
-      </Heading>
-    )
-  }
-
+export const Logo: React.FC<LogoProps> = ({ href = '#hero', onClick }) => {
   return (
-    <Flex h="8" flexShrink="0" alignItems="flex-start">
-      <Link
-        href={href}
-        display="flex"
-        p="1"
-        borderRadius="sm"
-        onClick={onClick}
-      >
-        {logo}
-        <VisuallyHidden>{siteConfig.seo?.title}</VisuallyHidden>
-      </Link>
-    </Flex>
+    <Box as={Link} href={href} onClick={onClick} textDecoration="none" _hover={{ textDecoration: 'none' }}>
+      <HStack spacing={2} align="center">
+        <Box
+          bgGradient="linear(to-br, red.500, red.800)"
+          px={2.5}
+          py={1}
+          borderRadius="md"
+          boxShadow="0 0 15px rgba(229, 62, 62, 0.4)"
+        >
+          <Text fontWeight="900" fontSize="lg" letterSpacing="widest" color="white" lineHeight="1">
+            ALDA
+          </Text>
+        </Box>
+        <Text
+          fontWeight="bold"
+          fontSize="xs"
+          letterSpacing="wider"
+          color="gray.400"
+          display={{ base: 'none', sm: 'inline' }}
+          textTransform="uppercase"
+        >
+          Official
+        </Text>
+      </HStack>
+    </Box>
   )
 }

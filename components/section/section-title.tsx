@@ -9,18 +9,20 @@ import {
 export interface SectionTitleProps extends Omit<StackProps, 'title'> {
   title: React.ReactNode
   description?: React.ReactNode
-  align?: 'left' | 'center'
+  align?: 'left' | 'center' | 'right'
   variant?: string
 }
 
 export const SectionTitle: React.FC<SectionTitleProps> = (props) => {
-  const { title, description, align, variant, ...rest } = props
+  const { title, description, align = 'left', variant, ...rest } = props
   const styles = useMultiStyleConfig('SectionTitle', { variant })
+
+  const alignItems = align === 'left' ? 'flex-start' : align === 'right' ? 'flex-end' : 'center'
 
   return (
     <VStack
       sx={styles.wrapper}
-      alignItems={align === 'left' ? 'flex-start' : 'center'}
+      alignItems={alignItems}
       spacing={4}
       {...rest}
     >

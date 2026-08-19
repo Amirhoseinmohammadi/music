@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Link } from "@saas-ui/react";
-import { FaTwitter } from "react-icons/fa";
+import { IconBrandTwitter } from "@tabler/icons-react";
 
 export interface TestimonialProps extends CardProps {
   name: string;
@@ -43,7 +43,7 @@ export const Testimonial = ({
 
         {href && (
           <Link href={href} position="absolute" top="4" right="4">
-            <FaTwitter />
+            <IconBrandTwitter />
           </Link>
         )}
       </CardBody>

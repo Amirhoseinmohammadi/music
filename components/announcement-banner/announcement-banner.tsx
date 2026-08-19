@@ -17,7 +17,7 @@ import {
   BannerDescription,
   BannerTitle,
 } from "@saas-ui/react";
-import { FiArrowRight } from "react-icons/fi";
+import { IconArrowRight } from "@tabler/icons-react";
 import { FallInPlace } from "../motion/fall-in-place";
 
 export interface AnnouncementBannerProps {
@@ -101,7 +101,7 @@ export const AnnouncementBanner: React.FC<AnnouncementBannerProps> = (
                       }}
                       rightIcon={
                         <Icon
-                          as={FiArrowRight}
+                          as={IconArrowRight}
                           transform="translate(-5px)"
                           transitionProperty="common"
                           transitionDuration="normal"

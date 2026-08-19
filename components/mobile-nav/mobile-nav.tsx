@@ -14,8 +14,7 @@ import {
   useUpdateEffect,
 } from '@chakra-ui/react'
 import * as React from 'react'
-import { AiOutlineMenu } from 'react-icons/ai'
-import { FiGlobe } from 'react-icons/fi'
+import { IconMenu2, IconWorld } from '@tabler/icons-react'
 import { RemoveScroll } from 'react-remove-scroll'
 
 import { Logo } from '#components/layout/logo'
@@ -75,7 +74,7 @@ export function MobileNavContent(props: MobileNavContentProps) {
                     variant="outline"
                     borderColor="whiteAlpha.300"
                     color="gray.200"
-                    leftIcon={<FiGlobe />}
+                    leftIcon={<IconWorld size={16} />}
                     onClick={toggleLanguage}
                     borderRadius="full"
                     fontSize="xs"
@@ -127,7 +126,7 @@ export const MobileNavButton = React.forwardRef(
         fontSize="20px"
         color="gray.200"
         variant="ghost"
-        icon={<AiOutlineMenu />}
+        icon={<IconMenu2 />}
         {...props}
         aria-label="Open menu"
       />

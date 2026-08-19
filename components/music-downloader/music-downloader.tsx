@@ -11,9 +11,8 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
-import * as mm from 'music-metadata-browser'
+import { IconDownload, IconPlayerPause, IconPlayerPlay } from '@tabler/icons-react'
 import * as React from 'react'
-import { FiDownload, FiPause, FiPlay } from 'react-icons/fi'
 
 import { Section, SectionTitle } from 'components/section'
 import { useLanguage } from 'context/language-context'
@@ -34,47 +33,9 @@ interface TrackCardProps {
 
 const TrackCard: React.FC<TrackCardProps> = ({ track, isPlaying, onTogglePlay }) => {
   const { language } = useLanguage()
-  const [coverUrl, setCoverUrl] = React.useState<string | null>(null)
-
-  React.useEffect(() => {
-    let isMounted = true
-    let createdBlobUrl: string | null = null
-
-    const loadEmbeddedCover = async () => {
-      if (!track.audioUrl) return
-
-      try {
-        const response = await fetch(track.audioUrl)
-        if (!response.ok) throw new Error(`HTTP error ${response.status}`)
-        const audioBlob = await response.blob()
-        const metadata = await mm.parseBlob(audioBlob)
-
-        if (metadata.common.picture && metadata.common.picture.length > 0) {
-          const pic = metadata.common.picture[0]
-          const imageBlob = new Blob([pic.data], { type: pic.format || 'image/jpeg' })
-          createdBlobUrl = URL.createObjectURL(imageBlob)
-          if (isMounted) {
-            setCoverUrl(createdBlobUrl)
-          }
-        }
-      } catch (err) {
-        // Fallback silently
-      }
-    }
-
-    loadEmbeddedCover()
-
-    return () => {
-      isMounted = false
-      if (createdBlobUrl) {
-        URL.revokeObjectURL(createdBlobUrl)
-      }
-    }
-  }, [track.audioUrl])
-
   const displayTitle = language === 'fa' ? track.titleFa || track.title : track.title
   const displayAlbum = language === 'fa' ? track.albumFa || track.album : track.album
-  const imageSource = coverUrl || '/static/images/alda.jpeg'
+  const imageSource = '/static/images/alda.jpeg'
 
   const hasCustomDriveLink =
     track.driveDownloadUrl &&
@@ -117,7 +78,7 @@ const TrackCard: React.FC<TrackCardProps> = ({ track, isPlaying, onTogglePlay })
             onClick={() => onTogglePlay(track)}
             _hover={{ bg: 'rgba(0,0,0,0.7)' }}
           >
-            <Icon as={isPlaying ? FiPause : FiPlay} color={isPlaying ? '#FF1E42' : 'white'} />
+            <Icon as={isPlaying ? IconPlayerPause : IconPlayerPlay} color={isPlaying ? '#FF1E42' : 'white'} />
           </Flex>
         </Box>
         
@@ -156,7 +117,7 @@ const TrackCard: React.FC<TrackCardProps> = ({ track, isPlaying, onTogglePlay })
         fontWeight="bold"
         letterSpacing="widest"
         _hover={{ bg: '#FF1E42', borderColor: '#FF1E42', color: 'white' }}
-        leftIcon={<FiDownload />}
+        leftIcon={<IconDownload />}
       >
         DL
       </Button>

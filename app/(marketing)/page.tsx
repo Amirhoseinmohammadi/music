@@ -19,15 +19,15 @@ import type { NextPage } from 'next'
 import Image from 'next/image'
 import * as React from 'react'
 import {
-  FiArrowDown,
-  FiDisc,
-  FiDownload,
-  FiHeadphones,
-  FiLayers,
-  FiMapPin,
-  FiMic,
-  FiMusic,
-} from 'react-icons/fi'
+  IconArrowDown,
+  IconDisc,
+  IconDownload,
+  IconHeadphones,
+  IconLayersIntersect,
+  IconMapPin,
+  IconMicrophone,
+  IconMusic,
+} from '@tabler/icons-react'
 
 import { MusicDownloaderList } from '#components/music-downloader'
 import { useLanguage } from 'context/language-context'
@@ -121,13 +121,13 @@ const HeroSection: React.FC = () => {
         <VStack align="flex-start" spacing={1}>
           <Text color="gray.500" fontSize="10px" fontWeight="bold" letterSpacing="widest" mb={1}>STREAM</Text>
           <HStack as="a" href="https://spotify.com" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
-            <Text>Spotify</Text><Icon as={FiArrowDown} transform="rotate(-135deg)" />
+            <Text>Spotify</Text><Icon as={IconArrowDown} transform="rotate(-135deg)" />
           </HStack>
           <HStack as="a" href="https://soundcloud.com" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
-            <Text>Soundcloud</Text><Icon as={FiArrowDown} transform="rotate(-135deg)" />
+            <Text>Soundcloud</Text><Icon as={IconArrowDown} transform="rotate(-135deg)" />
           </HStack>
           <HStack as="a" href="https://youtube.com" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
-            <Text>YouTube</Text><Icon as={FiArrowDown} transform="rotate(-135deg)" />
+            <Text>YouTube</Text><Icon as={IconArrowDown} transform="rotate(-135deg)" />
           </HStack>
         </VStack>
 
@@ -135,10 +135,10 @@ const HeroSection: React.FC = () => {
         <VStack align="flex-end" spacing={1}>
           <Text color="gray.500" fontSize="10px" fontWeight="bold" letterSpacing="widest" mb={1}>CONNECT</Text>
           <HStack as="a" href="https://instagram.com" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
-            <Text>Instagram</Text><Icon as={FiArrowDown} transform="rotate(-135deg)" />
+            <Text>Instagram</Text><Icon as={IconArrowDown} transform="rotate(-135deg)" />
           </HStack>
           <HStack as="a" href="https://t.me" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
-            <Text>Telegram</Text><Icon as={FiArrowDown} transform="rotate(-135deg)" />
+            <Text>Telegram</Text><Icon as={IconArrowDown} transform="rotate(-135deg)" />
           </HStack>
         </VStack>
       </Flex>
@@ -196,7 +196,7 @@ const AboutSection: React.FC = () => {
           <SimpleGrid columns={1} spacing={0} flex="1" w="full" borderTop="1px solid rgba(255, 255, 255, 0.08)">
             <Flex py={6} borderBottom="1px solid rgba(255, 255, 255, 0.08)" justify="space-between" align="center">
               <HStack spacing={4}>
-                <Icon as={FiMapPin} color="#FF1E42" boxSize={5} />
+                <Icon as={IconMapPin} color="#FF1E42" boxSize={5} />
                 <Text fontSize="xs" color="gray.500" fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
                   Roots & Scene
                 </Text>
@@ -208,7 +208,7 @@ const AboutSection: React.FC = () => {
 
             <Flex py={6} borderBottom="1px solid rgba(255, 255, 255, 0.08)" justify="space-between" align="center">
               <HStack spacing={4}>
-                <Icon as={FiMic} color="#FF1E42" boxSize={5} />
+                <Icon as={IconMicrophone} color="#FF1E42" boxSize={5} />
                 <Text fontSize="xs" color="gray.500" fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
                   Underground
                 </Text>
@@ -220,7 +220,7 @@ const AboutSection: React.FC = () => {
 
             <Flex py={6} borderBottom="1px solid rgba(255, 255, 255, 0.08)" justify="space-between" align="center">
               <HStack spacing={4}>
-                <Icon as={FiLayers} color="#FF1E42" boxSize={5} />
+                <Icon as={IconLayersIntersect} color="#FF1E42" boxSize={5} />
                 <Text fontSize="xs" color="gray.500" fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
                   Flow & Signature
                 </Text>
@@ -232,7 +232,7 @@ const AboutSection: React.FC = () => {
 
             <Flex py={6} borderBottom="1px solid rgba(255, 255, 255, 0.08)" justify="space-between" align="center">
               <HStack spacing={4}>
-                <Icon as={FiDisc} color="#FF1E42" boxSize={5} />
+                <Icon as={IconDisc} color="#FF1E42" boxSize={5} />
                 <Text fontSize="xs" color="gray.500" fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
                   Direct Catalog
                 </Text>

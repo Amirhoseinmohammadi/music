@@ -1,5 +1,4 @@
-import * as React from 'react'
-import { FaInstagram, FaSoundcloud, FaSpotify, FaTelegramPlane, FaYoutube } from 'react-icons/fa'
+import { IconBrandInstagram, IconBrandSoundcloud, IconBrandSpotify, IconBrandTelegram, IconBrandYoutube } from '@tabler/icons-react'
 
 export interface SeoConfig {
   title: string
@@ -44,23 +43,23 @@ const siteConfig = {
     links: [
       {
         href: 'https://instagram.com',
-        label: <FaInstagram size="18" />,
+        label: <IconBrandInstagram size={18} stroke={1.5} />,
       },
       {
         href: 'https://t.me',
-        label: <FaTelegramPlane size="18" />,
+        label: <IconBrandTelegram size={18} stroke={1.5} />,
       },
       {
         href: 'https://youtube.com',
-        label: <FaYoutube size="18" />,
+        label: <IconBrandYoutube size={18} stroke={1.5} />,
       },
       {
         href: 'https://spotify.com',
-        label: <FaSpotify size="18" />,
+        label: <IconBrandSpotify size={18} stroke={1.5} />,
       },
       {
         href: 'https://soundcloud.com',
-        label: <FaSoundcloud size="18" />,
+        label: <IconBrandSoundcloud size={18} stroke={1.5} />,
       },
     ],
   },

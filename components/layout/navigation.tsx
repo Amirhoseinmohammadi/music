@@ -7,7 +7,6 @@ import {
   useUpdateEffect,
 } from '@chakra-ui/react'
 import * as React from 'react'
-import { FiGlobe } from 'react-icons/fi'
 
 import { MobileNavButton, MobileNavContent } from '#components/mobile-nav'
 import { NavLink } from '#components/nav-link'

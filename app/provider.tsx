@@ -1,6 +1,5 @@
 'use client'
 
-import { AuthProvider } from '@saas-ui/auth'
 import { SaasProvider } from '@saas-ui/react'
 import * as React from 'react'
 
@@ -11,7 +10,7 @@ export function Provider(props: { children: React.ReactNode }) {
   return (
     <SaasProvider theme={theme}>
       <LanguageProvider>
-        <AuthProvider>{props.children}</AuthProvider>
+        {props.children}
       </LanguageProvider>
     </SaasProvider>
   )

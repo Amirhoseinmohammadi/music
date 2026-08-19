@@ -8,7 +8,7 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react'
-import { FiCheck } from 'react-icons/fi'
+import { IconCheck } from '@tabler/icons-react'
 
 import React from 'react'
 
@@ -109,7 +109,7 @@ const PricingFeature: React.FC<PricingFeatureProps> = (props) => {
   const { title, iconColor = 'primary.500' } = props
   return (
     <HStack>
-      <Icon as={FiCheck} color={iconColor} />
+      <Icon as={IconCheck} color={iconColor} />
       <Text flex="1" fontSize="sm">
         {title}
       </Text>

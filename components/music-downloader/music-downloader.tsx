@@ -35,13 +35,45 @@ const TrackCard: React.FC<TrackCardProps> = ({ track, isPlaying, onTogglePlay })
   const { language } = useLanguage()
   const displayTitle = language === 'fa' ? track.titleFa || track.title : track.title
   const displayAlbum = language === 'fa' ? track.albumFa || track.album : track.album
-  const imageSource = '/static/images/alda.jpeg'
+  
+  const [coverImage, setCoverImage] = React.useState<string | null>(null)
 
-  const hasCustomDriveLink =
+  React.useEffect(() => {
+    if (track.audioUrl) {
+      if (typeof window !== 'undefined') {
+        import('jsmediatags').then((jsmediatags) => {
+          jsmediatags.default.read(track.audioUrl, {
+            onSuccess: function (tag: any) {
+              const picture = tag.tags.picture
+              if (picture) {
+                let base64String = ''
+                for (let i = 0; i < picture.data.length; i++) {
+                  base64String += String.fromCharCode(picture.data[i])
+                }
+                const base64 = 'data:' + picture.format + ';base64,' + window.btoa(base64String)
+                setCoverImage(base64)
+              }
+            },
+            onError: function (error: any) {
+              console.log('Error reading tags for ' + track.title, error)
+            }
+          })
+        }).catch((e) => {
+          console.error("jsmediatags could not be loaded", e)
+        })
+      }
+    }
+  }, [track.audioUrl, track.title])
+
+  const fallbackImage = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(track.title)}&backgroundColor=000000,FF1E42,1a1a1a&textColor=ffffff`
+  const imageSource = coverImage || track.imageUrl || fallbackImage
+
+  const hasCustomDriveLink = Boolean(
     track.driveDownloadUrl &&
     !track.driveDownloadUrl.includes('DRIVE_ID') &&
     !track.driveDownloadUrl.includes('YOUR_GDRIVE') &&
     track.driveDownloadUrl.startsWith('http')
+  )
   const downloadHref = hasCustomDriveLink ? track.driveDownloadUrl : track.audioUrl
   const downloadFilename = `${track.artist} - ${track.title}.mp3`
 
@@ -104,7 +136,7 @@ const TrackCard: React.FC<TrackCardProps> = ({ track, isPlaying, onTogglePlay })
       <Button
         as="a"
         href={downloadHref}
-        download={downloadFilename}
+        download={hasCustomDriveLink ? undefined : downloadFilename}
         target={hasCustomDriveLink ? '_blank' : undefined}
         rel={hasCustomDriveLink ? 'noopener noreferrer' : undefined}
         size="sm"
@@ -132,6 +164,7 @@ export const MusicDownloaderList: React.FC<MusicDownloaderProps> = ({
   tracks,
 }) => {
   const [currentPlayingId, setCurrentPlayingId] = React.useState<string | null>(null)
+  const [isPlaying, setIsPlaying] = React.useState(false)
   const audioRef = React.useRef<HTMLAudioElement | null>(null)
   const { language } = useLanguage()
 
@@ -139,13 +172,19 @@ export const MusicDownloaderList: React.FC<MusicDownloaderProps> = ({
     if (!track.audioUrl) return
 
     if (currentPlayingId === track.id) {
-      audioRef.current?.pause()
-      setCurrentPlayingId(null)
+      if (isPlaying) {
+        audioRef.current?.pause()
+        setIsPlaying(false)
+      } else {
+        audioRef.current?.play()
+        setIsPlaying(true)
+      }
     } else {
       if (audioRef.current) {
         audioRef.current.src = track.audioUrl
         audioRef.current.play()
         setCurrentPlayingId(track.id)
+        setIsPlaying(true)
       }
     }
   }
@@ -154,7 +193,7 @@ export const MusicDownloaderList: React.FC<MusicDownloaderProps> = ({
     <Section id={id} py="20" bg="#000000">
       <audio
         ref={audioRef}
-        onEnded={() => setCurrentPlayingId(null)}
+        onEnded={() => setIsPlaying(false)}
         style={{ display: 'none' }}
       />
 
@@ -179,7 +218,7 @@ export const MusicDownloaderList: React.FC<MusicDownloaderProps> = ({
             <TrackCard
               key={track.id}
               track={track}
-              isPlaying={currentPlayingId === track.id}
+              isPlaying={currentPlayingId === track.id && isPlaying}
               onTogglePlay={togglePlay}
             />
           ))}

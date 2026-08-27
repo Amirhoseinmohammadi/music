@@ -28,6 +28,7 @@ import {
   IconMicrophone,
   IconMusic,
 } from '@tabler/icons-react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 import { MusicDownloaderList } from '#components/music-downloader'
 import { useLanguage } from 'context/language-context'
@@ -43,19 +44,46 @@ const Home: NextPage = () => {
   )
 }
 
+const heroImages = [
+  '/static/images/alda.jpeg',
+  '/static/images/picture1.jpg',
+  '/static/images/picture2.jpg',
+  '/static/images/picture3.jpg',
+]
+
 const HeroSection: React.FC = () => {
+  const [currentImageIndex, setCurrentImageIndex] = React.useState(0)
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length)
+    }, 4000)
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <Box id="hero" position="relative" height="100vh" width="100vw" overflow="hidden" bg="#000000" ml="calc(50% - 50vw)">
       {/* Background Image with Heavy Radial Fade */}
       <Box position="absolute" inset="0" zIndex="0">
-        <Image
-          src="/static/images/alda.jpeg"
-          alt="ALDA Rapper"
-          fill
-          style={{ objectFit: 'cover', objectPosition: 'center 20%' }}
-          priority
-          quality={90}
-        />
+        <AnimatePresence>
+          <motion.div
+            key={currentImageIndex}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
+            style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+          >
+            <Image
+              src={heroImages[currentImageIndex]}
+              alt={`ALDA Hero ${currentImageIndex}`}
+              fill
+              style={{ objectFit: 'cover', objectPosition: 'center 20%' }}
+              priority
+              quality={90}
+            />
+          </motion.div>
+        </AnimatePresence>
         <Box
           position="absolute"
           inset="0"
@@ -123,7 +151,7 @@ const HeroSection: React.FC = () => {
           <HStack as="a" href="https://spotify.com" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
             <Text>Spotify</Text><Icon as={IconArrowDown} transform="rotate(-135deg)" />
           </HStack>
-          <HStack as="a" href="https://soundcloud.com" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
+          <HStack as="a" href="https://soundcloud.com/khodealdahiphop?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
             <Text>Soundcloud</Text><Icon as={IconArrowDown} transform="rotate(-135deg)" />
           </HStack>
           <HStack as="a" href="https://youtube.com" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
@@ -134,7 +162,7 @@ const HeroSection: React.FC = () => {
         {/* Bottom Right */}
         <VStack align="flex-end" spacing={1}>
           <Text color="gray.500" fontSize="10px" fontWeight="bold" letterSpacing="widest" mb={1}>CONNECT</Text>
-          <HStack as="a" href="https://instagram.com" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
+          <HStack as="a" href="https://instagram.com/aldahiphop" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
             <Text>Instagram</Text><Icon as={IconArrowDown} transform="rotate(-135deg)" />
           </HStack>
           <HStack as="a" href="https://t.me" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>

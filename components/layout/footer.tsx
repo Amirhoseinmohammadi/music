@@ -43,7 +43,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
           </VStack>
 
           <HStack spacing={6} wrap="wrap" justify="center">
-            <Link href="https://instagram.com" target="_blank" color="white" fontFamily="mono" fontSize="10px" fontWeight="bold" letterSpacing="widest" textTransform="uppercase" _hover={{ color: '#FF1E42' }}>
+            <Link href="https://instagram.com/aldahiphop" target="_blank" color="white" fontFamily="mono" fontSize="10px" fontWeight="bold" letterSpacing="widest" textTransform="uppercase" _hover={{ color: '#FF1E42' }}>
               INSTAGRAM →
             </Link>
             <Link href="https://t.me" target="_blank" color="white" fontFamily="mono" fontSize="10px" fontWeight="bold" letterSpacing="widest" textTransform="uppercase" _hover={{ color: '#FF1E42' }}>
@@ -52,7 +52,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
             <Link href="https://spotify.com" target="_blank" color="white" fontFamily="mono" fontSize="10px" fontWeight="bold" letterSpacing="widest" textTransform="uppercase" _hover={{ color: '#FF1E42' }}>
               SPOTIFY →
             </Link>
-            <Link href="https://soundcloud.com" target="_blank" color="white" fontFamily="mono" fontSize="10px" fontWeight="bold" letterSpacing="widest" textTransform="uppercase" _hover={{ color: '#FF1E42' }}>
+            <Link href="https://soundcloud.com/khodealdahiphop?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing" target="_blank" color="white" fontFamily="mono" fontSize="10px" fontWeight="bold" letterSpacing="widest" textTransform="uppercase" _hover={{ color: '#FF1E42' }}>
               SOUNDCLOUD →
             </Link>
           </HStack>

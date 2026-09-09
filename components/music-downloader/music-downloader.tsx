@@ -36,37 +36,11 @@ const TrackCard: React.FC<TrackCardProps> = ({ track, isPlaying, onTogglePlay })
   const displayTitle = language === 'fa' ? track.titleFa || track.title : track.title
   const displayAlbum = language === 'fa' ? track.albumFa || track.album : track.album
   
-  const [coverImage, setCoverImage] = React.useState<string | null>(null)
-
-  React.useEffect(() => {
-    if (track.audioUrl) {
-      if (typeof window !== 'undefined') {
-        import('jsmediatags').then((jsmediatags) => {
-          jsmediatags.default.read(track.audioUrl, {
-            onSuccess: function (tag: any) {
-              const picture = tag.tags.picture
-              if (picture) {
-                let base64String = ''
-                for (let i = 0; i < picture.data.length; i++) {
-                  base64String += String.fromCharCode(picture.data[i])
-                }
-                const base64 = 'data:' + picture.format + ';base64,' + window.btoa(base64String)
-                setCoverImage(base64)
-              }
-            },
-            onError: function (error: any) {
-              console.log('Error reading tags for ' + track.title, error)
-            }
-          })
-        }).catch((e) => {
-          console.error("jsmediatags could not be loaded", e)
-        })
-      }
-    }
-  }, [track.audioUrl, track.title])
-
-  const fallbackImage = `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(track.title)}&backgroundColor=000000,FF1E42,1a1a1a&textColor=ffffff`
-  const imageSource = coverImage || track.imageUrl || fallbackImage
+  // Cover image MUST be extracted directly from the audio file itself via the server-side API.
+  // If the audio file does not contain embedded ID3 cover art, fallbackSrc is used.
+  const imageSource = track.audioUrl
+    ? `/api/cover?url=${encodeURIComponent(track.audioUrl)}`
+    : (track.imageUrl || '/static/images/alda.jpeg')
 
   const hasCustomDriveLink = Boolean(
     track.driveDownloadUrl &&
@@ -99,7 +73,14 @@ const TrackCard: React.FC<TrackCardProps> = ({ track, isPlaying, onTogglePlay })
           border="1px solid rgba(255, 255, 255, 0.1)"
           flexShrink={0}
         >
-          <Image src={imageSource} w="100%" h="100%" objectFit="cover" alt="cover" fallbackSrc="/static/images/alda.jpeg" />
+          <Image
+            src={imageSource}
+            w="100%"
+            h="100%"
+            objectFit="cover"
+            alt="cover"
+            fallbackSrc={track.imageUrl || '/static/images/alda.jpeg'}
+          />
           <Flex
             position="absolute"
             inset="0"

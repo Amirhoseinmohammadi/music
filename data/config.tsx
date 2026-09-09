@@ -1,4 +1,4 @@
-import { IconBrandInstagram, IconBrandSoundcloud, IconBrandSpotify, IconBrandTelegram, IconBrandYoutube } from '@tabler/icons-react'
+import { IconBrandInstagram, IconBrandSoundcloud, IconBrandTelegram, IconBrandYoutube } from '@tabler/icons-react'
 
 export interface SeoConfig {
   title: string
@@ -42,20 +42,16 @@ const siteConfig = {
     copyright: '© ALDA. All rights reserved.',
     links: [
       {
-        href: 'https://instagram.com',
+        href: 'https://instagram.com/aldahiphop',
         label: <IconBrandInstagram size={18} stroke={1.5} />,
       },
       {
-        href: 'https://t.me',
+        href: 'https://t.me/aldatunes',
         label: <IconBrandTelegram size={18} stroke={1.5} />,
       },
       {
         href: 'https://youtube.com',
         label: <IconBrandYoutube size={18} stroke={1.5} />,
-      },
-      {
-        href: 'https://spotify.com',
-        label: <IconBrandSpotify size={18} stroke={1.5} />,
       },
       {
         href: 'https://soundcloud.com',

@@ -148,9 +148,6 @@ const HeroSection: React.FC = () => {
         {/* Bottom Left */}
         <VStack align="flex-start" spacing={1}>
           <Text color="gray.500" fontSize="10px" fontWeight="bold" letterSpacing="widest" mb={1}>STREAM</Text>
-          <HStack as="a" href="https://spotify.com" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
-            <Text>Spotify</Text><Icon as={IconArrowDown} transform="rotate(-135deg)" />
-          </HStack>
           <HStack as="a" href="https://soundcloud.com/khodealdahiphop?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
             <Text>Soundcloud</Text><Icon as={IconArrowDown} transform="rotate(-135deg)" />
           </HStack>
@@ -165,7 +162,7 @@ const HeroSection: React.FC = () => {
           <HStack as="a" href="https://instagram.com/aldahiphop" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
             <Text>Instagram</Text><Icon as={IconArrowDown} transform="rotate(-135deg)" />
           </HStack>
-          <HStack as="a" href="https://t.me" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
+          <HStack as="a" href="https://t.me/aldatunes" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
             <Text>Telegram</Text><Icon as={IconArrowDown} transform="rotate(-135deg)" />
           </HStack>
         </VStack>

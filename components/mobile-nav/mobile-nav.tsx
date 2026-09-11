@@ -11,10 +11,12 @@ import {
   Link,
   Stack,
   useBreakpointValue,
+  useColorMode,
+  useColorModeValue,
   useUpdateEffect,
 } from '@chakra-ui/react'
 import * as React from 'react'
-import { IconMenu2, IconWorld } from '@tabler/icons-react'
+import { IconMenu2, IconMoon, IconSun, IconWorld } from '@tabler/icons-react'
 import { RemoveScroll } from 'react-remove-scroll'
 
 import { Logo } from '#components/layout/logo'
@@ -30,6 +32,12 @@ export function MobileNavContent(props: MobileNavContentProps) {
   const { isOpen, onClose = () => {} } = props
   const closeBtnRef = React.useRef<HTMLButtonElement>(null)
   const { language, toggleLanguage } = useLanguage()
+  const { colorMode, toggleColorMode } = useColorMode()
+  const [mounted, setMounted] = React.useState(false)
+
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const showOnBreakpoint = useBreakpointValue({ base: true, lg: false })
 
@@ -47,6 +55,13 @@ export function MobileNavContent(props: MobileNavContentProps) {
     }
   }, [isOpen])
 
+  const drawerBg = useColorModeValue('white', 'blackAlpha.950')
+  const drawerBorder = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
+  const btnBorder = useColorModeValue('blackAlpha.300', 'whiteAlpha.300')
+  const btnColor = useColorModeValue('gray.800', 'gray.200')
+  const closeBtnColor = useColorModeValue('gray.800', 'white')
+  const linkColor = useColorModeValue('gray.800', 'gray.200')
+
   return (
     <>
       {isOpen && (
@@ -54,7 +69,7 @@ export function MobileNavContent(props: MobileNavContentProps) {
           <Flex
             direction="column"
             w="100%"
-            bg="blackAlpha.950"
+            bg={drawerBg}
             h="100vh"
             overflow="auto"
             pos="fixed"
@@ -63,17 +78,42 @@ export function MobileNavContent(props: MobileNavContentProps) {
             pb="8"
             backdropFilter="blur(10px)"
             borderBottom="1px solid"
-            borderColor="whiteAlpha.200"
+            borderColor={drawerBorder}
           >
             <Box>
               <Flex justify="space-between" align="center" px="6" pt="5" pb="5">
                 <Logo onClick={onClose} />
-                <HStack spacing="4">
+                <HStack spacing="3">
+                  <IconButton
+                    aria-label={
+                      mounted && colorMode === 'light'
+                        ? 'Switch to dark theme'
+                        : 'Switch to light theme'
+                    }
+                    title={
+                      mounted && colorMode === 'light'
+                        ? 'Switch to dark theme'
+                        : 'Switch to light theme'
+                    }
+                    icon={
+                      mounted && colorMode === 'light' ? (
+                        <IconMoon size={16} />
+                      ) : (
+                        <IconSun size={16} />
+                      )
+                    }
+                    size="sm"
+                    variant="outline"
+                    borderColor={btnBorder}
+                    color={btnColor}
+                    borderRadius="full"
+                    onClick={toggleColorMode}
+                  />
                   <Button
                     size="sm"
                     variant="outline"
-                    borderColor="whiteAlpha.300"
-                    color="gray.200"
+                    borderColor={btnBorder}
+                    color={btnColor}
                     leftIcon={<IconWorld size={16} />}
                     onClick={toggleLanguage}
                     borderRadius="full"
@@ -81,7 +121,7 @@ export function MobileNavContent(props: MobileNavContentProps) {
                   >
                     {language === 'fa' ? 'EN' : 'فارسی'}
                   </Button>
-                  <CloseButton ref={closeBtnRef} onClick={onClose} color="white" />
+                  <CloseButton ref={closeBtnRef} onClick={onClose} color={closeBtnColor} />
                 </HStack>
               </Flex>
               <Stack alignItems="stretch" spacing="2" px="6" pt="4">
@@ -97,7 +137,7 @@ export function MobileNavContent(props: MobileNavContentProps) {
                       borderRadius="lg"
                       fontSize="lg"
                       fontWeight="bold"
-                      color="gray.200"
+                      color={linkColor}
                       _hover={{
                         bg: 'red.500',
                         color: 'white',

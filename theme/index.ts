@@ -41,8 +41,8 @@ export const theme = extendTheme(
           scrollBehavior: 'smooth',
         },
         body: {
-          color: '#F0F2F5',
-          bg: '#000000',
+          color: mode('gray.900', '#F0F2F5')(props),
+          bg: mode('#F8F9FA', '#000000')(props),
           fontSize: 'lg',
           overflowX: 'hidden',
         },

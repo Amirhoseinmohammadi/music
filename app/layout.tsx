@@ -1,4 +1,4 @@
-import { ColorModeScript, theme } from '@chakra-ui/react'
+import { ColorModeScript } from '@chakra-ui/react'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
@@ -114,7 +114,7 @@ function formatDurationToIso(duration?: string): string | undefined {
 }
 
 export default function Layout(props: { children: React.ReactNode }) {
-  const colorMode = theme.config.initialColorMode
+  const colorMode = 'dark'
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -169,15 +169,15 @@ export default function Layout(props: { children: React.ReactNode }) {
   }
 
   return (
-    <html lang="en" className={inter.variable} data-theme={colorMode} style={{ colorScheme: colorMode }}>
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`chakra-ui-${colorMode}`}>
-        <ColorModeScript initialColorMode={colorMode} />
+      <body className={`chakra-ui-${colorMode}`} suppressHydrationWarning>
+        <ColorModeScript initialColorMode="dark" />
         <Provider>{props.children}</Provider>
       </body>
     </html>

@@ -9,6 +9,7 @@ import {
   Icon,
   Image,
   Text,
+  useColorModeValue,
   VStack,
 } from '@chakra-ui/react'
 import { IconDownload, IconPlayerPause, IconPlayerPlay } from '@tabler/icons-react'
@@ -51,18 +52,28 @@ const TrackCard: React.FC<TrackCardProps> = ({ track, isPlaying, onTogglePlay })
 
   const imageAlt = `${track.artist} - ${track.title}${track.titleFa ? ` (${track.titleFa})` : ''} - Studio Master`
 
+  const cardBg = useColorModeValue('white', '#000000')
+  const cardBorder = useColorModeValue('rgba(0, 0, 0, 0.08)', 'rgba(255, 255, 255, 0.08)')
+  const cardHoverBg = useColorModeValue('rgba(255, 30, 66, 0.04)', 'rgba(255, 30, 66, 0.05)')
+  const avatarBorder = useColorModeValue('rgba(0, 0, 0, 0.12)', 'rgba(255, 255, 255, 0.1)')
+  const defaultTitleColor = useColorModeValue('gray.900', 'white')
+  const titleColor = isPlaying ? '#FF1E42' : defaultTitleColor
+  const titleFaColor = useColorModeValue('gray.600', 'gray.400')
+  const dlBorder = useColorModeValue('rgba(0, 0, 0, 0.15)', 'rgba(255, 255, 255, 0.2)')
+  const dlColor = useColorModeValue('gray.800', 'white')
+
   return (
     <Flex
       as="article"
       id={`track-${track.id}`}
-      bg="#000000"
+      bg={cardBg}
       borderBottom="1px solid"
-      borderColor="rgba(255, 255, 255, 0.08)"
+      borderColor={cardBorder}
       p={4}
       align="center"
       justify="space-between"
       transition="all 0.2s"
-      _hover={{ bg: 'rgba(255, 30, 66, 0.05)' }}
+      _hover={{ bg: cardHoverBg }}
     >
       <HStack spacing={4}>
         {/* Vinyl-style Avatar */}
@@ -72,7 +83,8 @@ const TrackCard: React.FC<TrackCardProps> = ({ track, isPlaying, onTogglePlay })
           h="48px"
           borderRadius="full"
           overflow="hidden"
-          border="1px solid rgba(255, 255, 255, 0.1)"
+          border="1px solid"
+          borderColor={avatarBorder}
           flexShrink={0}
         >
           <Image
@@ -108,7 +120,7 @@ const TrackCard: React.FC<TrackCardProps> = ({ track, isPlaying, onTogglePlay })
         <VStack align="flex-start" spacing={1}>
           <Heading
             as="h3"
-            color={isPlaying ? '#FF1E42' : 'white'}
+            color={titleColor}
             fontFamily="mono"
             fontSize={{ base: 'xs', md: 'sm' }}
             fontWeight="bold"
@@ -121,7 +133,7 @@ const TrackCard: React.FC<TrackCardProps> = ({ track, isPlaying, onTogglePlay })
             {track.titleFa && (
               <Text
                 as="span"
-                color="gray.400"
+                color={titleFaColor}
                 fontWeight="normal"
                 fontSize="xs"
                 ml={2}
@@ -154,8 +166,8 @@ const TrackCard: React.FC<TrackCardProps> = ({ track, isPlaying, onTogglePlay })
         rel={hasCustomDriveLink ? 'noopener noreferrer' : undefined}
         size="sm"
         variant="outline"
-        borderColor="rgba(255, 255, 255, 0.2)"
-        color="white"
+        borderColor={dlBorder}
+        color={dlColor}
         borderRadius="full"
         fontFamily="mono"
         fontSize="10px"
@@ -188,8 +200,13 @@ export const MusicDownloaderList: React.FC<MusicDownloaderProps> = ({
     }
   }
 
+  const sectionBg = useColorModeValue('#F8F9FA', '#000000')
+  const titleColor = useColorModeValue('gray.900', 'white')
+  const descColor = useColorModeValue('gray.600', 'gray.500')
+  const listBorder = useColorModeValue('rgba(0, 0, 0, 0.08)', 'rgba(255, 255, 255, 0.08)')
+
   return (
-    <Section id={id} py="20" bg="#000000">
+    <Section id={id} py="20" bg={sectionBg}>
       <VStack spacing={12} align="stretch" maxW="3xl" mx="auto">
         {(title || description) && (
           <VStack align="flex-start" spacing={4}>
@@ -200,7 +217,7 @@ export const MusicDownloaderList: React.FC<MusicDownloaderProps> = ({
                 fontFamily="mono"
                 textTransform="uppercase"
                 letterSpacing="widest"
-                color="white"
+                color={titleColor}
               >
                 {title}
               </Heading>
@@ -209,7 +226,7 @@ export const MusicDownloaderList: React.FC<MusicDownloaderProps> = ({
               <Text
                 fontFamily="mono"
                 fontSize="sm"
-                color="gray.500"
+                color={descColor}
                 letterSpacing="widest"
                 textTransform="uppercase"
               >
@@ -219,7 +236,7 @@ export const MusicDownloaderList: React.FC<MusicDownloaderProps> = ({
           </VStack>
         )}
 
-        <Box borderTop="1px solid" borderColor="rgba(255, 255, 255, 0.08)">
+        <Box borderTop="1px solid" borderColor={listBorder}>
           {tracks.map((track) => (
             <TrackCard
               key={track.id}

@@ -23,13 +23,17 @@ export interface FooterProps extends BoxProps {}
 
 export const Footer: React.FC<FooterProps> = (props) => {
   const { t } = useLanguage()
+  const footerBg = useColorModeValue('white', '#000000')
+  const borderColor = useColorModeValue('rgba(0, 0, 0, 0.08)', 'rgba(255, 255, 255, 0.08)')
+  const linkColor = useColorModeValue('gray.800', 'white')
 
   return (
     <Box
       id="contact"
       as="footer"
-      bg="#000000"
-      borderTop="1px solid rgba(255, 255, 255, 0.08)"
+      bg={footerBg}
+      borderTop="1px solid"
+      borderColor={borderColor}
       py={12}
       {...props}
     >
@@ -48,7 +52,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="ALDA on Instagram (opens in new tab)"
-              color="white"
+              color={linkColor}
               fontFamily="mono"
               fontSize="10px"
               fontWeight="bold"
@@ -63,7 +67,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="ALDA on Telegram (opens in new tab)"
-              color="white"
+              color={linkColor}
               fontFamily="mono"
               fontSize="10px"
               fontWeight="bold"
@@ -78,7 +82,7 @@ export const Footer: React.FC<FooterProps> = (props) => {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="ALDA on SoundCloud (opens in new tab)"
-              color="white"
+              color={linkColor}
               fontFamily="mono"
               fontSize="10px"
               fontWeight="bold"

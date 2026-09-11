@@ -31,14 +31,20 @@ import {
 import { motion, AnimatePresence } from 'framer-motion'
 
 import { MusicDownloaderList } from '#components/music-downloader'
+import { MusicPlayer } from '#components/music-player'
 import { useLanguage } from 'context/language-context'
 import { tracks } from 'data/songs'
 
 const Home: NextPage = () => {
+  const bg = useColorModeValue('#F8F9FA', '#000000')
+
   return (
-    <Box bg="#000000" minH="100vh">
+    <Box bg={bg} minH="100vh">
       <HeroSection />
       <MusicDownloaderSection />
+      <Box maxW="6xl" mx="auto" px={{ base: 4, md: 6 }} pb={{ base: 16, md: 24 }}>
+        <MusicPlayer />
+      </Box>
       <AboutSection />
     </Box>
   )
@@ -61,8 +67,22 @@ const HeroSection: React.FC = () => {
     return () => clearInterval(interval)
   }, [])
 
+  const heroBg = useColorModeValue('#F8F9FA', '#000000')
+  const radialOverlay = useColorModeValue(
+    'radial-gradient(circle at center, transparent 0%, rgba(248, 249, 250, 0.4) 65%, #F8F9FA 100%)',
+    'radial-gradient(circle at center, transparent 0%, #000000 70%, #000000 100%)'
+  )
+  const linearOverlay = useColorModeValue(
+    'linear(to-b, transparent 0%, rgba(248, 249, 250, 0.6) 70%, #F8F9FA 100%)',
+    'linear(to-b, transparent 0%, rgba(0,0,0,0.6) 70%, #000000 100%)'
+  )
+  const titleColor = useColorModeValue('gray.900', 'white')
+  const subtitleColor = useColorModeValue('gray.600', 'gray.400')
+  const cornerColor = useColorModeValue('gray.800', 'white')
+  const edgeAccentColor = useColorModeValue('gray.600', 'gray.500')
+
   return (
-    <Box id="hero" position="relative" height="100vh" width="100vw" overflow="hidden" bg="#000000" ml="calc(50% - 50vw)">
+    <Box id="hero" position="relative" height="100vh" width="100vw" overflow="hidden" bg={heroBg} ml="calc(50% - 50vw)">
       {/* Background Image with Heavy Radial Fade */}
       <Box position="absolute" inset="0" zIndex="0">
         <AnimatePresence>
@@ -88,12 +108,12 @@ const HeroSection: React.FC = () => {
         <Box
           position="absolute"
           inset="0"
-          bg="radial-gradient(circle at center, transparent 0%, #000000 70%, #000000 100%)"
+          bg={radialOverlay}
         />
         <Box
           position="absolute"
           inset="0"
-          bgGradient="linear(to-b, transparent 0%, rgba(0,0,0,0.6) 70%, #000000 100%)"
+          bgGradient={linearOverlay}
         />
       </Box>
 
@@ -109,7 +129,7 @@ const HeroSection: React.FC = () => {
         pointerEvents="none"
       >
         <Text
-          color="gray.400"
+          color={subtitleColor}
           fontSize={{ base: '10px', md: 'xs' }}
           fontWeight="bold"
           letterSpacing="0.3em"
@@ -120,7 +140,7 @@ const HeroSection: React.FC = () => {
         </Text>
         <Heading
           as="h1"
-          color="white"
+          color={titleColor}
           fontSize={{ base: '6xl', sm: '8xl', md: '10xl', lg: '12xl' }}
           fontWeight="900"
           letterSpacing="0.1em"
@@ -133,13 +153,13 @@ const HeroSection: React.FC = () => {
 
       {/* Edge Accents */}
       <Box position="absolute" top="50%" left={8} transform="translateY(-50%) rotate(-90deg)" transformOrigin="left center" zIndex="2" display={{ base: 'none', lg: 'block' }}>
-        <Text color="gray.500" fontSize="xs" fontWeight="bold" letterSpacing="widest">
+        <Text color={edgeAccentColor} fontSize="xs" fontWeight="bold" letterSpacing="widest">
           ✳ SINCE 2020
         </Text>
       </Box>
 
       <Box position="absolute" top="50%" right={8} transform="translateY(-50%) rotate(90deg)" transformOrigin="right center" zIndex="2" display={{ base: 'none', lg: 'block' }}>
-        <Text color="gray.500" fontSize="xs" fontWeight="bold" letterSpacing="widest">
+        <Text color={edgeAccentColor} fontSize="xs" fontWeight="bold" letterSpacing="widest">
           ✳ UNDERGROUND RAP
         </Text>
       </Box>
@@ -148,19 +168,19 @@ const HeroSection: React.FC = () => {
       <Flex position="absolute" bottom={8} left={8} right={8} justify="space-between" zIndex="2" align="flex-end">
         {/* Bottom Left */}
         <VStack align="flex-start" spacing={1}>
-          <Text color="gray.500" fontSize="10px" fontWeight="bold" letterSpacing="widest" mb={1}>STREAM</Text>
-          <HStack as="a" href="https://soundcloud.com/khodealdahiphop?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing" target="_blank" rel="noopener noreferrer" aria-label="Stream ALDA on SoundCloud" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
+          <Text color={edgeAccentColor} fontSize="10px" fontWeight="bold" letterSpacing="widest" mb={1}>STREAM</Text>
+          <HStack as="a" href="https://soundcloud.com/khodealdahiphop?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing" target="_blank" rel="noopener noreferrer" aria-label="Stream ALDA on SoundCloud" color={cornerColor} fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
             <Text>Soundcloud</Text><Icon as={IconArrowDown} transform="rotate(-135deg)" />
           </HStack>
         </VStack>
 
         {/* Bottom Right */}
         <VStack align="flex-end" spacing={1}>
-          <Text color="gray.500" fontSize="10px" fontWeight="bold" letterSpacing="widest" mb={1}>CONNECT</Text>
-          <HStack as="a" href="https://instagram.com/aldahiphop" target="_blank" rel="noopener noreferrer" aria-label="Follow ALDA on Instagram" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
+          <Text color={edgeAccentColor} fontSize="10px" fontWeight="bold" letterSpacing="widest" mb={1}>CONNECT</Text>
+          <HStack as="a" href="https://instagram.com/aldahiphop" target="_blank" rel="noopener noreferrer" aria-label="Follow ALDA on Instagram" color={cornerColor} fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
             <Text>Instagram</Text><Icon as={IconArrowDown} transform="rotate(-135deg)" />
           </HStack>
-          <HStack as="a" href="https://t.me/aldatunes" target="_blank" rel="noopener noreferrer" aria-label="Join ALDA on Telegram" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
+          <HStack as="a" href="https://t.me/aldatunes" target="_blank" rel="noopener noreferrer" aria-label="Join ALDA on Telegram" color={cornerColor} fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
             <Text>Telegram</Text><Icon as={IconArrowDown} transform="rotate(-135deg)" />
           </HStack>
         </VStack>
@@ -187,8 +207,16 @@ const MusicDownloaderSection: React.FC = () => {
 const AboutSection: React.FC = () => {
   const { t } = useLanguage()
 
+  const aboutBg = useColorModeValue('#F8F9FA', '#000000')
+  const aboutBorder = useColorModeValue('rgba(0, 0, 0, 0.08)', 'rgba(255, 255, 255, 0.08)')
+  const titleColor = useColorModeValue('gray.900', 'white')
+  const p1Color = useColorModeValue('gray.700', 'gray.300')
+  const p2Color = useColorModeValue('gray.600', 'gray.500')
+  const statLabelColor = useColorModeValue('gray.600', 'gray.500')
+  const statValColor = useColorModeValue('gray.900', 'white')
+
   return (
-    <Box as="section" id="about" py={{ base: 20, md: 32 }} bg="#000000" borderTop="1px solid rgba(255, 255, 255, 0.08)">
+    <Box as="section" id="about" py={{ base: 20, md: 32 }} bg={aboutBg} borderTop="1px solid" borderColor={aboutBorder}>
       <Container maxW="container.xl">
         <Stack direction={{ base: 'column', lg: 'row' }} spacing={{ base: 12, lg: 20 }} alignItems="flex-start">
           {/* Bio Description */}
@@ -208,7 +236,7 @@ const AboutSection: React.FC = () => {
             <Text
               fontSize={{ base: '3xl', md: '5xl', lg: '6xl' }}
               fontWeight="900"
-              color="white"
+              color={titleColor}
               textTransform="uppercase"
               letterSpacing="tighter"
               lineHeight="0.95"
@@ -217,62 +245,62 @@ const AboutSection: React.FC = () => {
             </Text>
 
             <Box borderLeft="2px solid #FF1E42" pl={6}>
-              <Text color="gray.300" fontSize={{ base: 'md', md: 'lg' }} lineHeight="1.8" fontFamily="mono">
+              <Text color={p1Color} fontSize={{ base: 'md', md: 'lg' }} lineHeight="1.8" fontFamily="mono">
                 {t.aboutP1}
               </Text>
             </Box>
 
-            <Text color="gray.500" fontSize="sm" lineHeight="tall" fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
+            <Text color={p2Color} fontSize="sm" lineHeight="tall" fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
               {t.aboutP2}
             </Text>
           </VStack>
 
           {/* Minimalist Stat Grid */}
-          <SimpleGrid columns={1} spacing={0} flex="1" w="full" borderTop="1px solid rgba(255, 255, 255, 0.08)">
-            <Flex py={6} borderBottom="1px solid rgba(255, 255, 255, 0.08)" justify="space-between" align="center">
+          <SimpleGrid columns={1} spacing={0} flex="1" w="full" borderTop="1px solid" borderColor={aboutBorder}>
+            <Flex py={6} borderBottom="1px solid" borderColor={aboutBorder} justify="space-between" align="center">
               <HStack spacing={4}>
                 <Icon as={IconMapPin} color="#FF1E42" boxSize={5} />
-                <Text fontSize="xs" color="gray.500" fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
+                <Text fontSize="xs" color={statLabelColor} fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
                   Roots & Scene
                 </Text>
               </HStack>
-              <Text color="white" fontFamily="mono" fontWeight="bold" textTransform="uppercase">
+              <Text color={statValColor} fontFamily="mono" fontWeight="bold" textTransform="uppercase">
                 {t.aboutStatOrigin}
               </Text>
             </Flex>
 
-            <Flex py={6} borderBottom="1px solid rgba(255, 255, 255, 0.08)" justify="space-between" align="center">
+            <Flex py={6} borderBottom="1px solid" borderColor={aboutBorder} justify="space-between" align="center">
               <HStack spacing={4}>
                 <Icon as={IconMicrophone} color="#FF1E42" boxSize={5} />
-                <Text fontSize="xs" color="gray.500" fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
+                <Text fontSize="xs" color={statLabelColor} fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
                   Underground
                 </Text>
               </HStack>
-              <Text color="white" fontFamily="mono" fontWeight="bold" textTransform="uppercase">
+              <Text color={statValColor} fontFamily="mono" fontWeight="bold" textTransform="uppercase">
                 {t.aboutStatGenre}
               </Text>
             </Flex>
 
-            <Flex py={6} borderBottom="1px solid rgba(255, 255, 255, 0.08)" justify="space-between" align="center">
+            <Flex py={6} borderBottom="1px solid" borderColor={aboutBorder} justify="space-between" align="center">
               <HStack spacing={4}>
                 <Icon as={IconLayersIntersect} color="#FF1E42" boxSize={5} />
-                <Text fontSize="xs" color="gray.500" fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
+                <Text fontSize="xs" color={statLabelColor} fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
                   Flow & Signature
                 </Text>
               </HStack>
-              <Text color="white" fontFamily="mono" fontWeight="bold" textTransform="uppercase">
+              <Text color={statValColor} fontFamily="mono" fontWeight="bold" textTransform="uppercase">
                 {t.aboutStatStyle}
               </Text>
             </Flex>
 
-            <Flex py={6} borderBottom="1px solid rgba(255, 255, 255, 0.08)" justify="space-between" align="center">
+            <Flex py={6} borderBottom="1px solid" borderColor={aboutBorder} justify="space-between" align="center">
               <HStack spacing={4}>
                 <Icon as={IconDisc} color="#FF1E42" boxSize={5} />
-                <Text fontSize="xs" color="gray.500" fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
+                <Text fontSize="xs" color={statLabelColor} fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
                   Direct Catalog
                 </Text>
               </HStack>
-              <Text color="white" fontFamily="mono" fontWeight="bold" textTransform="uppercase">
+              <Text color={statValColor} fontFamily="mono" fontWeight="bold" textTransform="uppercase">
                 {t.aboutStatDistribution}
               </Text>
             </Flex>

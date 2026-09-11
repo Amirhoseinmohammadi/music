@@ -3,7 +3,6 @@
 import { Box, SkipNavContent, SkipNavLink } from '@chakra-ui/react'
 import { ReactNode } from 'react'
 
-import { MusicPlayer } from '#components/music-player'
 import {
   AnnouncementBanner,
   AnnouncementBannerProps,
@@ -25,26 +24,11 @@ export const MarketingLayout: React.FC<LayoutProps> = (props) => {
       <SkipNavLink>Skip to content</SkipNavLink>
       {announcementProps ? <AnnouncementBanner {...announcementProps} /> : null}
       <Header {...headerProps} />
-      <Box as="main" pb={{ base: 36, md: 28 }}>
+      <Box as="main">
         <SkipNavContent />
         {children}
       </Box>
       <Footer {...footerProps} />
-
-      {/* Global Fixed Bottom Music Player Dock */}
-      <Box
-        position="fixed"
-        bottom={{ base: 3, md: 5 }}
-        left="0"
-        right="0"
-        zIndex="dock"
-        px={{ base: 3, md: 6 }}
-        pointerEvents="none"
-      >
-        <Box maxW="6xl" mx="auto" pointerEvents="auto">
-          <MusicPlayer />
-        </Box>
-      </Box>
     </Box>
   )
 }

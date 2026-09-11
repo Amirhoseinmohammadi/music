@@ -96,7 +96,7 @@ export const metadata: Metadata = {
   },
   manifest: '/static/favicons/manifest.json',
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
+    google: 'czJLD9aervOgHbqVCc1pqgDllBNR7yaRMzAGGl8NDPU',
   },
 }
 

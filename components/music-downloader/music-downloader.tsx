@@ -14,7 +14,8 @@ import {
 import { IconDownload, IconPlayerPause, IconPlayerPlay } from '@tabler/icons-react'
 import * as React from 'react'
 
-import { Section, SectionTitle } from 'components/section'
+import { Section } from 'components/section'
+import { useAudio } from 'context/audio-context'
 import { useLanguage } from 'context/language-context'
 import { Track } from 'data/songs'
 
@@ -35,24 +36,25 @@ const TrackCard: React.FC<TrackCardProps> = ({ track, isPlaying, onTogglePlay })
   const { language } = useLanguage()
   const displayTitle = language === 'fa' ? track.titleFa || track.title : track.title
   const displayAlbum = language === 'fa' ? track.albumFa || track.album : track.album
-  
-  // Cover image MUST be extracted directly from the audio file itself via the server-side API.
-  // If the audio file does not contain embedded ID3 cover art, fallbackSrc is used.
-  const imageSource = track.audioUrl
-    ? `/api/cover?url=${encodeURIComponent(track.audioUrl)}`
-    : (track.imageUrl || '/static/images/alda.jpeg')
+
+  // Use static image directly for fast edge caching without serverless metadata extraction latency
+  const imageSource = track.imageUrl || '/static/images/alda.jpeg'
 
   const hasCustomDriveLink = Boolean(
     track.driveDownloadUrl &&
-    !track.driveDownloadUrl.includes('DRIVE_ID') &&
-    !track.driveDownloadUrl.includes('YOUR_GDRIVE') &&
-    track.driveDownloadUrl.startsWith('http')
+      !track.driveDownloadUrl.includes('DRIVE_ID') &&
+      !track.driveDownloadUrl.includes('YOUR_GDRIVE') &&
+      track.driveDownloadUrl.startsWith('http')
   )
   const downloadHref = hasCustomDriveLink ? track.driveDownloadUrl : track.audioUrl
   const downloadFilename = `${track.artist} - ${track.title}.mp3`
 
+  const imageAlt = `${track.artist} - ${track.title}${track.titleFa ? ` (${track.titleFa})` : ''} - Studio Master`
+
   return (
     <Flex
+      as="article"
+      id={`track-${track.id}`}
       bg="#000000"
       borderBottom="1px solid"
       borderColor="rgba(255, 255, 255, 0.08)"
@@ -78,8 +80,10 @@ const TrackCard: React.FC<TrackCardProps> = ({ track, isPlaying, onTogglePlay })
             w="100%"
             h="100%"
             objectFit="cover"
-            alt="cover"
-            fallbackSrc={track.imageUrl || '/static/images/alda.jpeg'}
+            alt={imageAlt}
+            loading="lazy"
+            decoding="async"
+            fallbackSrc="/static/images/alda.jpeg"
           />
           <Flex
             position="absolute"
@@ -90,26 +94,54 @@ const TrackCard: React.FC<TrackCardProps> = ({ track, isPlaying, onTogglePlay })
             cursor="pointer"
             onClick={() => onTogglePlay(track)}
             _hover={{ bg: 'rgba(0,0,0,0.7)' }}
+            aria-label={isPlaying ? `Pause ${track.title}` : `Play ${track.title}`}
+            role="button"
           >
-            <Icon as={isPlaying ? IconPlayerPause : IconPlayerPlay} color={isPlaying ? '#FF1E42' : 'white'} />
+            <Icon
+              as={isPlaying ? IconPlayerPause : IconPlayerPlay}
+              color={isPlaying ? '#FF1E42' : 'white'}
+            />
           </Flex>
         </Box>
-        
+
         {/* Track Info */}
         <VStack align="flex-start" spacing={1}>
-          <Text
+          <Heading
+            as="h3"
             color={isPlaying ? '#FF1E42' : 'white'}
             fontFamily="mono"
             fontSize={{ base: 'xs', md: 'sm' }}
             fontWeight="bold"
             textTransform="uppercase"
             letterSpacing="widest"
+            m={0}
+            lineHeight="shorter"
           >
-            {displayTitle}
-          </Text>
-          <HStack spacing={2} color="gray.500" fontSize="10px" fontFamily="mono" textTransform="uppercase" letterSpacing="widest">
-            <Text>{track.duration || '0:00'}</Text>
-            {displayAlbum && <Text>| {displayAlbum}</Text>}
+            {track.title}
+            {track.titleFa && (
+              <Text
+                as="span"
+                color="gray.400"
+                fontWeight="normal"
+                fontSize="xs"
+                ml={2}
+                letterSpacing="normal"
+              >
+                ({track.titleFa})
+              </Text>
+            )}
+          </Heading>
+          <HStack
+            spacing={2}
+            color="gray.500"
+            fontSize="10px"
+            fontFamily="mono"
+            textTransform="uppercase"
+            letterSpacing="widest"
+          >
+            <Text as="span">{track.duration || '0:00'}</Text>
+            {displayAlbum && <Text as="span">| {displayAlbum}</Text>}
+            <Text as="span">| {track.artist}</Text>
           </HStack>
         </VStack>
       </HStack>
@@ -131,6 +163,8 @@ const TrackCard: React.FC<TrackCardProps> = ({ track, isPlaying, onTogglePlay })
         letterSpacing="widest"
         _hover={{ bg: '#FF1E42', borderColor: '#FF1E42', color: 'white' }}
         leftIcon={<IconDownload />}
+        aria-label={`Download ${track.artist} - ${track.title} MP3`}
+        title={`Download ${track.artist} - ${track.title} MP3`}
       >
         DL
       </Button>
@@ -144,50 +178,41 @@ export const MusicDownloaderList: React.FC<MusicDownloaderProps> = ({
   description,
   tracks,
 }) => {
-  const [currentPlayingId, setCurrentPlayingId] = React.useState<string | null>(null)
-  const [isPlaying, setIsPlaying] = React.useState(false)
-  const audioRef = React.useRef<HTMLAudioElement | null>(null)
-  const { language } = useLanguage()
+  const { currentTrack, isPlaying, selectTrack, togglePlay } = useAudio()
 
-  const togglePlay = (track: Track) => {
-    if (!track.audioUrl) return
-
-    if (currentPlayingId === track.id) {
-      if (isPlaying) {
-        audioRef.current?.pause()
-        setIsPlaying(false)
-      } else {
-        audioRef.current?.play()
-        setIsPlaying(true)
-      }
+  const handleTogglePlay = (track: Track) => {
+    if (currentTrack?.id === track.id) {
+      togglePlay()
     } else {
-      if (audioRef.current) {
-        audioRef.current.src = track.audioUrl
-        audioRef.current.play()
-        setCurrentPlayingId(track.id)
-        setIsPlaying(true)
-      }
+      selectTrack(track)
     }
   }
 
   return (
     <Section id={id} py="20" bg="#000000">
-      <audio
-        ref={audioRef}
-        onEnded={() => setIsPlaying(false)}
-        style={{ display: 'none' }}
-      />
-
       <VStack spacing={12} align="stretch" maxW="3xl" mx="auto">
         {(title || description) && (
           <VStack align="flex-start" spacing={4}>
             {title && (
-              <Heading as="h2" size="xl" fontFamily="mono" textTransform="uppercase" letterSpacing="widest" color="white">
+              <Heading
+                as="h2"
+                size="xl"
+                fontFamily="mono"
+                textTransform="uppercase"
+                letterSpacing="widest"
+                color="white"
+              >
                 {title}
               </Heading>
             )}
             {description && (
-              <Text fontFamily="mono" fontSize="sm" color="gray.500" letterSpacing="widest" textTransform="uppercase">
+              <Text
+                fontFamily="mono"
+                fontSize="sm"
+                color="gray.500"
+                letterSpacing="widest"
+                textTransform="uppercase"
+              >
                 {description}
               </Text>
             )}
@@ -199,8 +224,8 @@ export const MusicDownloaderList: React.FC<MusicDownloaderProps> = ({
             <TrackCard
               key={track.id}
               track={track}
-              isPlaying={currentPlayingId === track.id && isPlaying}
-              onTogglePlay={togglePlay}
+              isPlaying={currentTrack?.id === track.id && isPlaying}
+              onTogglePlay={handleTogglePlay}
             />
           ))}
         </Box>

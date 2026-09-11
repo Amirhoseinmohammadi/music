@@ -76,11 +76,12 @@ const HeroSection: React.FC = () => {
           >
             <Image
               src={heroImages[currentImageIndex]}
-              alt={`ALDA Hero ${currentImageIndex}`}
+              alt={`ALDA — Iranian Underground Rap & Studio Discography (Slide ${currentImageIndex + 1})`}
               fill
+              sizes="100vw"
               style={{ objectFit: 'cover', objectPosition: 'center 20%' }}
-              priority
-              quality={90}
+              priority={currentImageIndex === 0}
+              quality={85}
             />
           </motion.div>
         </AnimatePresence>
@@ -115,7 +116,7 @@ const HeroSection: React.FC = () => {
           mb={4}
           textTransform="uppercase"
         >
-          Rapper & Producer / From Zanjan
+          Persian Underground Rap / From Zanjan to Tehran
         </Text>
         <Heading
           as="h1"
@@ -148,21 +149,18 @@ const HeroSection: React.FC = () => {
         {/* Bottom Left */}
         <VStack align="flex-start" spacing={1}>
           <Text color="gray.500" fontSize="10px" fontWeight="bold" letterSpacing="widest" mb={1}>STREAM</Text>
-          <HStack as="a" href="https://soundcloud.com/khodealdahiphop?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
+          <HStack as="a" href="https://soundcloud.com/khodealdahiphop?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing" target="_blank" rel="noopener noreferrer" aria-label="Stream ALDA on SoundCloud" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
             <Text>Soundcloud</Text><Icon as={IconArrowDown} transform="rotate(-135deg)" />
-          </HStack>
-          <HStack as="a" href="https://youtube.com" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
-            <Text>YouTube</Text><Icon as={IconArrowDown} transform="rotate(-135deg)" />
           </HStack>
         </VStack>
 
         {/* Bottom Right */}
         <VStack align="flex-end" spacing={1}>
           <Text color="gray.500" fontSize="10px" fontWeight="bold" letterSpacing="widest" mb={1}>CONNECT</Text>
-          <HStack as="a" href="https://instagram.com/aldahiphop" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
+          <HStack as="a" href="https://instagram.com/aldahiphop" target="_blank" rel="noopener noreferrer" aria-label="Follow ALDA on Instagram" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
             <Text>Instagram</Text><Icon as={IconArrowDown} transform="rotate(-135deg)" />
           </HStack>
-          <HStack as="a" href="https://t.me/aldatunes" target="_blank" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
+          <HStack as="a" href="https://t.me/aldatunes" target="_blank" rel="noopener noreferrer" aria-label="Join ALDA on Telegram" color="white" fontSize="xs" _hover={{ color: '#FF1E42' }} spacing={1}>
             <Text>Telegram</Text><Icon as={IconArrowDown} transform="rotate(-135deg)" />
           </HStack>
         </VStack>
@@ -187,27 +185,39 @@ const MusicDownloaderSection: React.FC = () => {
 }
 
 const AboutSection: React.FC = () => {
-  const { t, language } = useLanguage()
+  const { t } = useLanguage()
 
   return (
-    <Box id="about" py={{ base: 20, md: 32 }} bg="#000000" borderTop="1px solid rgba(255, 255, 255, 0.08)">
+    <Box as="section" id="about" py={{ base: 20, md: 32 }} bg="#000000" borderTop="1px solid rgba(255, 255, 255, 0.08)">
       <Container maxW="container.xl">
         <Stack direction={{ base: 'column', lg: 'row' }} spacing={{ base: 12, lg: 20 }} alignItems="flex-start">
           {/* Bio Description */}
-          <VStack align="flex-start" spacing={8} flex="1">
+          <VStack align="flex-start" spacing={6} flex="1">
             <Heading
-              fontSize={{ base: '4xl', md: '6xl', lg: '8xl' }}
+              as="h2"
+              fontSize={{ base: 'xs', md: 'sm' }}
+              fontWeight="bold"
+              fontFamily="mono"
+              color="#FF1E42"
+              textTransform="uppercase"
+              letterSpacing="widest"
+            >
+              About ALDA | درباره علدا
+            </Heading>
+
+            <Text
+              fontSize={{ base: '3xl', md: '5xl', lg: '6xl' }}
               fontWeight="900"
               color="white"
               textTransform="uppercase"
               letterSpacing="tighter"
-              lineHeight="0.9"
+              lineHeight="0.95"
             >
               {t.aboutSubtitle}
-            </Heading>
+            </Text>
 
             <Box borderLeft="2px solid #FF1E42" pl={6}>
-              <Text color="gray.300" fontSize={{ base: 'md', md: 'xl' }} lineHeight="1.8" fontFamily="mono">
+              <Text color="gray.300" fontSize={{ base: 'md', md: 'lg' }} lineHeight="1.8" fontFamily="mono">
                 {t.aboutP1}
               </Text>
             </Box>

@@ -1,6 +1,5 @@
 import { extendTheme, type StyleFunctionProps } from '@chakra-ui/react'
 import { mode } from '@chakra-ui/theme-tools'
-import '@fontsource-variable/inter'
 import { theme as baseTheme } from '@saas-ui/react'
 
 import components from './components'
@@ -50,8 +49,8 @@ export const theme = extendTheme(
       }),
     },
     fonts: {
-      heading: 'Inter Variable, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Vazirmatn, sans-serif',
-      body: 'Inter Variable, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Vazirmatn, sans-serif',
+      heading: 'var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Vazirmatn, sans-serif',
+      body: 'var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Vazirmatn, sans-serif',
     },
     fontSizes,
     components,

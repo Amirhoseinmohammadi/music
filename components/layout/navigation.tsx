@@ -23,10 +23,11 @@ const Navigation: React.FC = () => {
   }, [mobileNav.isOpen])
 
   return (
-    <HStack spacing="2" flexShrink={0}>
+    <HStack as="nav" aria-label="Main navigation" spacing="2" flexShrink={0}>
       <Button
         as="a"
         href="#hero"
+        aria-label="Scroll to Home Hero section"
         size="sm"
         variant="outline"
         borderColor="whiteAlpha.300"
@@ -41,6 +42,7 @@ const Navigation: React.FC = () => {
       <Button
         as="a"
         href="#tracks"
+        aria-label="Scroll to Music Discography and Downloads section"
         size="sm"
         variant="outline"
         borderColor="whiteAlpha.300"
@@ -55,6 +57,7 @@ const Navigation: React.FC = () => {
       <Button
         as="a"
         href="#about"
+        aria-label="Scroll to About ALDA biography section"
         size="sm"
         variant="outline"
         borderColor="whiteAlpha.300"

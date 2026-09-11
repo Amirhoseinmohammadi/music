@@ -1,4 +1,4 @@
-import { IconBrandInstagram, IconBrandSoundcloud, IconBrandTelegram, IconBrandYoutube } from '@tabler/icons-react'
+import { IconBrandInstagram, IconBrandSoundcloud, IconBrandTelegram } from '@tabler/icons-react'
 
 export interface SeoConfig {
   title: string
@@ -7,8 +7,8 @@ export interface SeoConfig {
 
 const siteConfig = {
   seo: {
-    title: 'ALDA | Official Music Portfolio',
-    description: 'Official discography and direct track downloads for ALDA - Persian Underground Rap.',
+    title: 'ALDA (علدا) | Official Music & Discography',
+    description: 'Official discography and direct track downloads for ALDA (علدا) - Persian Underground Rap.',
   } as SeoConfig,
   header: {
     links: [
@@ -27,7 +27,7 @@ const siteConfig = {
       {
         id: 'about',
         label: 'About ALDA',
-        labelFa: 'درباره آلدا',
+        labelFa: 'درباره علدا',
         href: '#about',
       },
       {
@@ -48,10 +48,6 @@ const siteConfig = {
       {
         href: 'https://t.me/aldatunes',
         label: <IconBrandTelegram size={18} stroke={1.5} />,
-      },
-      {
-        href: 'https://youtube.com',
-        label: <IconBrandYoutube size={18} stroke={1.5} />,
       },
       {
         href: 'https://soundcloud.com',
